@@ -177,6 +177,8 @@ footer{background:#0a0a0a;color:#999;margin-top:50px;}
     <a onclick="filterNews('urdu',this);return false;">🇵🇰 اردو</a>
     <a onclick="showCricket();return false;">🏏 Cricket</a>
     <a onclick="showGTA6();return false;">🎮 GTA 6</a>
+    <a onclick="showJobs();return false;">💼 Jobs</a>
+    <a onclick="showRecipes();return false;">🍽️ Recipes</a>
     <a onclick="showAbout();return false;">ℹ️ About</a>
     <a onclick="showContact();return false;">📬 Contact</a>
     <button id="notifBtn" onclick="requestNotification()" style="background:#c0392b;color:white;border:none;padding:8px 14px;border-radius:2px;cursor:pointer;font-size:11px;font-weight:700;margin-left:8px;white-space:nowrap;">🔔 Alerts ON</button>
@@ -268,6 +270,22 @@ footer{background:#0a0a0a;color:#999;margin-top:50px;}
       </div>
     </div>
     <div class="ad-box"><strong>Advertisement</strong><br>300×600</div>
+
+    <!-- PAKISTAN PRICES -->
+    <div style="margin-bottom:28px;">
+      <div class="sec-title">💰 Pakistan Prices Today</div>
+      <div id="pricesWidget" style="background:var(--card);border:1px solid var(--border);border-radius:4px;overflow:hidden;">
+        <div style="padding:12px;text-align:center;color:var(--gray);font-size:13px;">Loading prices...</div>
+      </div>
+    </div>
+
+    <!-- PRAYER TIMES -->
+    <div style="margin-bottom:28px;">
+      <div class="sec-title">🕌 Namaz Awqat — Khairpur</div>
+      <div id="prayerWidget" style="background:linear-gradient(135deg,#1a3a5c,#0d2a4e);color:white;border-radius:4px;padding:16px;">
+        <div style="text-align:center;opacity:0.7;font-size:13px;">Loading prayer times...</div>
+      </div>
+    </div>
   </aside>
 </div>
 </div>
@@ -507,6 +525,110 @@ footer{background:#0a0a0a;color:#999;margin-top:50px;}
         <a href="https://www.youtube.com/watch?v=QdBZExpgErs" target="_blank" style="background:#ff0000;color:white;padding:12px 20px;text-decoration:none;border-radius:4px;font-size:13px;font-weight:700;text-align:center;">▶ Watch Trailer 1 on YouTube</a>
       </div>
     </div>
+  </div>
+</div>
+
+<!-- JOBS PAGE -->
+<div class="page-overlay" id="jobsPage">
+  <div class="page-header" style="background:linear-gradient(135deg,#1a3a5c,#0d2a4e);">
+    <button class="page-back" onclick="closePage('jobsPage')">← Back</button>
+    <h1>💼 Pakistan Jobs</h1>
+  </div>
+  <div class="page-content">
+    <div style="background:linear-gradient(135deg,#1a3a5c,#0d2a4e);color:white;padding:24px;border-radius:4px;margin-bottom:24px;text-align:center;">
+      <div style="font-size:40px;margin-bottom:8px;">💼</div>
+      <h2 style="font-family:'Playfair Display',serif;font-size:26px;">Pakistan Jobs 2026</h2>
+      <p style="opacity:0.8;font-size:13px;margin-top:6px;">Government, Private & International Jobs</p>
+    </div>
+
+    <!-- Job Categories -->
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:24px;">
+      <a href="https://www.fpsc.gov.pk" target="_blank" style="background:var(--card);border:1px solid var(--border);padding:16px;text-align:center;text-decoration:none;border-radius:4px;transition:all 0.2s;" onmouseover="this.style.borderColor='#c0392b'" onmouseout="this.style.borderColor='var(--border)'">
+        <div style="font-size:28px;">🏛️</div>
+        <div style="font-size:13px;font-weight:700;color:var(--text);margin-top:6px;">FPSC</div>
+        <div style="font-size:11px;color:var(--gray);">Federal Jobs</div>
+      </a>
+      <a href="https://www.ppsc.gop.pk" target="_blank" style="background:var(--card);border:1px solid var(--border);padding:16px;text-align:center;text-decoration:none;border-radius:4px;" onmouseover="this.style.borderColor='#c0392b'" onmouseout="this.style.borderColor='var(--border)'">
+        <div style="font-size:28px;">🏢</div>
+        <div style="font-size:13px;font-weight:700;color:var(--text);margin-top:6px;">PPSC</div>
+        <div style="font-size:11px;color:var(--gray);">Punjab Jobs</div>
+      </a>
+      <a href="https://www.spsc.gov.pk" target="_blank" style="background:var(--card);border:1px solid var(--border);padding:16px;text-align:center;text-decoration:none;border-radius:4px;" onmouseover="this.style.borderColor='#c0392b'" onmouseout="this.style.borderColor='var(--border)'">
+        <div style="font-size:28px;">🌊</div>
+        <div style="font-size:13px;font-weight:700;color:var(--text);margin-top:6px;">SPSC</div>
+        <div style="font-size:11px;color:var(--gray);">Sindh Jobs</div>
+      </a>
+      <a href="https://www.rozee.pk" target="_blank" style="background:var(--card);border:1px solid var(--border);padding:16px;text-align:center;text-decoration:none;border-radius:4px;" onmouseover="this.style.borderColor='#c0392b'" onmouseout="this.style.borderColor='var(--border)'">
+        <div style="font-size:28px;">💻</div>
+        <div style="font-size:13px;font-weight:700;color:var(--text);margin-top:6px;">Rozee.pk</div>
+        <div style="font-size:11px;color:var(--gray);">Private Jobs</div>
+      </a>
+      <a href="https://www.indeed.com/jobs?q=pakistan" target="_blank" style="background:var(--card);border:1px solid var(--border);padding:16px;text-align:center;text-decoration:none;border-radius:4px;" onmouseover="this.style.borderColor='#c0392b'" onmouseout="this.style.borderColor='var(--border)'">
+        <div style="font-size:28px;">🌍</div>
+        <div style="font-size:13px;font-weight:700;color:var(--text);margin-top:6px;">Indeed</div>
+        <div style="font-size:11px;color:var(--gray);">International</div>
+      </a>
+      <a href="https://www.linkedin.com/jobs/search/?location=Pakistan" target="_blank" style="background:var(--card);border:1px solid var(--border);padding:16px;text-align:center;text-decoration:none;border-radius:4px;" onmouseover="this.style.borderColor='#c0392b'" onmouseout="this.style.borderColor='var(--border)'">
+        <div style="font-size:28px;">🔗</div>
+        <div style="font-size:13px;font-weight:700;color:var(--text);margin-top:6px;">LinkedIn</div>
+        <div style="font-size:11px;color:var(--gray);">Professional</div>
+      </a>
+    </div>
+
+    <!-- Latest Jobs News -->
+    <div class="sec-title">📰 Latest Jobs News</div>
+    <div class="grid3" id="jobsNews"><div class="spin" style="grid-column:1/-1;"><div class="spinner"></div></div></div>
+  </div>
+</div>
+
+<!-- RECIPES PAGE -->
+<div class="page-overlay" id="recipesPage">
+  <div class="page-header" style="background:linear-gradient(135deg,#8B0000,#5c0000);">
+    <button class="page-back" onclick="closePage('recipesPage')">← Back</button>
+    <h1>🍽️ Pakistani Recipes</h1>
+  </div>
+  <div class="page-content">
+    <div style="background:linear-gradient(135deg,#8B0000,#5c0000);color:white;padding:24px;border-radius:4px;margin-bottom:24px;text-align:center;">
+      <div style="font-size:40px;margin-bottom:8px;">🍽️</div>
+      <h2 style="font-family:'Playfair Display',serif;font-size:26px;">Pakistani Recipes</h2>
+      <p style="opacity:0.8;font-size:13px;margin-top:6px;">Biryani, Karahi, Nihari & More!</p>
+    </div>
+
+    <!-- Recipe Cards -->
+    <div class="grid3" id="recipesGrid">
+      <div class="card" onclick="showRecipeDetail('biryani')">
+        <img src="https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=600&h=400&fit=crop" alt="Biryani">
+        <div class="card-body"><span class="badge" style="background:#8B0000;">RECIPE</span><h3>🍚 Chicken Biryani</h3><p>Pakistan ki famous dish — aromatic rice with tender chicken and spices</p><div class="card-meta">⏱ 1.5 hours | 4 servings</div></div>
+      </div>
+      <div class="card" onclick="showRecipeDetail('karahi')">
+        <img src="https://images.unsplash.com/photo-1645177628172-a94c1f96e6db?w=600&h=400&fit=crop" alt="Karahi">
+        <div class="card-body"><span class="badge" style="background:#8B0000;">RECIPE</span><h3>🥘 Chicken Karahi</h3><p>Spicy tomato-based chicken karahi — restaurant style</p><div class="card-meta">⏱ 45 mins | 4 servings</div></div>
+      </div>
+      <div class="card" onclick="showRecipeDetail('nihari')">
+        <img src="https://images.unsplash.com/photo-1574894709920-11b28e7367e3?w=600&h=400&fit=crop" alt="Nihari">
+        <div class="card-body"><span class="badge" style="background:#8B0000;">RECIPE</span><h3>🍖 Nihari</h3><p>Slow cooked beef stew — perfect for breakfast</p><div class="card-meta">⏱ 4 hours | 6 servings</div></div>
+      </div>
+      <div class="card" onclick="showRecipeDetail('halwa_puri')">
+        <img src="https://images.unsplash.com/photo-1631452180519-c014fe946bc7?w=600&h=400&fit=crop" alt="Halwa Puri">
+        <div class="card-body"><span class="badge" style="background:#8B0000;">RECIPE</span><h3>🫓 Halwa Puri</h3><p>Sunday ka nashta — sooji halwa with crispy puri</p><div class="card-meta">⏱ 1 hour | 4 servings</div></div>
+      </div>
+      <div class="card" onclick="showRecipeDetail('daal_chawal')">
+        <img src="https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=600&h=400&fit=crop" alt="Daal Chawal">
+        <div class="card-body"><span class="badge" style="background:#8B0000;">RECIPE</span><h3>🍛 Daal Chawal</h3><p>Comfort food — yellow lentils with steamed rice</p><div class="card-meta">⏱ 30 mins | 4 servings</div></div>
+      </div>
+      <div class="card" onclick="showRecipeDetail('seekh_kebab')">
+        <img src="https://images.unsplash.com/photo-1599487488170-d11ec9c172f0?w=600&h=400&fit=crop" alt="Seekh Kebab">
+        <div class="card-body"><span class="badge" style="background:#8B0000;">RECIPE</span><h3>🍢 Seekh Kebab</h3><p>Juicy minced meat kebabs — BBQ style</p><div class="card-meta">⏱ 30 mins | 4 servings</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- RECIPE DETAIL MODAL -->
+<div class="modal-ov" id="recipeModal" onclick="if(event.target.id==='recipeModal')closeModal2('recipeModal')">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal2('recipeModal')">✕</button>
+    <div id="recipeContent"></div>
   </div>
 </div>
 
@@ -973,12 +1095,147 @@ const catQueries={
   urdu:{q:'pakistan urdu news',s:''},
 };
 
+// PAKISTAN PRICES
+async function loadPrices(){
+  const el=document.getElementById('pricesWidget');
+  const prices=[
+    {label:'💵 USD/PKR',value:'277.50',change:'+0.30',up:true},
+    {label:'🥇 Gold (per tola)',value:'Rs 245,000',change:'+1,200',up:true},
+    {label:'⛽ Petrol',value:'Rs 289.41/L',change:'-2.00',up:false},
+    {label:'🛢️ Diesel',value:'Rs 282.24/L',change:'-1.50',up:false},
+    {label:'🇸🇦 SAR/PKR',value:'73.85',change:'+0.10',up:true},
+    {label:'🇦🇪 AED/PKR',value:'75.60',change:'+0.20',up:true},
+  ];
+  el.innerHTML=prices.map(p=>`
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 14px;border-bottom:1px solid var(--border);">
+      <div style="font-size:13px;font-weight:600;color:var(--text);">${p.label}</div>
+      <div style="text-align:right;">
+        <div style="font-size:13px;font-weight:700;color:var(--text);">${p.value}</div>
+        <div style="font-size:11px;color:${p.up?'#e74c3c':'#27ae60'};">${p.up?'▲':'▼'} ${p.change}</div>
+      </div>
+    </div>`).join('')+
+    '<div style="padding:8px;text-align:center;font-size:10px;color:var(--gray);">Updated: '+new Date().toLocaleDateString('en-PK',{day:'numeric',month:'short',year:'numeric'})+'</div>';
+}
+loadPrices();
+
+// PRAYER TIMES
+async function loadPrayerTimes(){
+  const el=document.getElementById('prayerWidget');
+  try{
+    const today=new Date();
+    const r=await fetch(`https://api.aladhan.com/v1/timingsByCity/${today.getDate()}-${today.getMonth()+1}-${today.getFullYear()}?city=Khairpur&country=Pakistan&method=1`);
+    const d=await r.json();
+    if(d.code===200){
+      const t=d.data.timings;
+      const prayers=[
+        {name:'Fajr',time:t.Fajr,icon:'🌅'},
+        {name:'Dhuhr',time:t.Dhuhr,icon:'☀️'},
+        {name:'Asr',time:t.Asr,icon:'🌤️'},
+        {name:'Maghrib',time:t.Maghrib,icon:'🌆'},
+        {name:'Isha',time:t.Isha,icon:'🌙'},
+      ];
+      const now=new Date();
+      const nowMins=now.getHours()*60+now.getMinutes();
+      el.innerHTML=`
+        <div style="text-align:center;margin-bottom:12px;">
+          <div style="font-size:12px;opacity:0.7;">📍 Khairpur Mirs, Sindh</div>
+          <div style="font-size:13px;font-weight:700;margin-top:4px;">${today.toLocaleDateString('en-PK',{weekday:'long',day:'numeric',month:'long'})}</div>
+          <div style="font-size:11px;opacity:0.7;margin-top:2px;">${d.data.date.readable} | ${d.data.date.hijri.date} ${d.data.date.hijri.month.en}</div>
+        </div>
+        ${prayers.map(p=>{
+          const [h,m]=p.time.split(':').map(Number);
+          const pMins=h*60+m;
+          const isNext=pMins>nowMins;
+          return `<div style="display:flex;justify-content:space-between;align-items:center;padding:8px 10px;margin-bottom:4px;border-radius:4px;background:${isNext?'rgba(255,255,255,0.2)':'rgba(255,255,255,0.08)'};">
+            <div style="display:flex;align-items:center;gap:8px;">
+              <span style="font-size:16px;">${p.icon}</span>
+              <span style="font-size:13px;font-weight:${isNext?'700':'400'};">${p.name}</span>
+              ${isNext?'<span style="background:#f39c12;color:#000;font-size:9px;padding:1px 6px;border-radius:8px;font-weight:700;">NEXT</span>':''}
+            </div>
+            <span style="font-size:14px;font-weight:700;">${p.time}</span>
+          </div>`;
+        }).join('')}
+        <div style="text-align:center;margin-top:8px;font-size:11px;opacity:0.6;">Sunrise: ${t.Sunrise} | Sunset: ${t.Sunset}</div>`;
+    }
+  }catch{
+    el.innerHTML=`<div style="text-align:center;padding:10px;">
+      <div style="font-size:13px;font-weight:700;margin-bottom:10px;">🕌 Namaz Awqat — Khairpur</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;font-size:12px;">
+        <div style="background:rgba(255,255,255,0.1);padding:8px;border-radius:4px;"><div>🌅 Fajr</div><div style="font-weight:700;">4:42 AM</div></div>
+        <div style="background:rgba(255,255,255,0.1);padding:8px;border-radius:4px;"><div>☀️ Dhuhr</div><div style="font-weight:700;">12:20 PM</div></div>
+        <div style="background:rgba(255,255,255,0.1);padding:8px;border-radius:4px;"><div>🌤️ Asr</div><div style="font-weight:700;">4:10 PM</div></div>
+        <div style="background:rgba(255,255,255,0.1);padding:8px;border-radius:4px;"><div>🌆 Maghrib</div><div style="font-weight:700;">7:18 PM</div></div>
+        <div style="background:rgba(255,255,255,0.1);padding:8px;border-radius:4px;"><div>🌙 Isha</div><div style="font-weight:700;">8:45 PM</div></div>
+      </div>
+    </div>`;
+  }
+}
+loadPrayerTimes();
+
+// JOBS
+function showJobs(){
+  document.getElementById('jobsPage').classList.add('show');
+  document.body.style.overflow='hidden';
+  loadJobsNews();
+}
+async function loadJobsNews(){
+  const el=document.getElementById('jobsNews');
+  try{
+    const r=await fetch(`https://content.guardianapis.com/search?api-key=${GUARDIAN_KEY}&q=pakistan+jobs+employment+career&show-fields=thumbnail,trailText&page-size=6&order-by=newest`);
+    const d=await r.json();
+    if(d.response?.results?.length){
+      el.innerHTML=d.response.results.map(a=>{
+        const img=a.fields?.thumbnail||'https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?w=600&h=400&fit=crop';
+        const summary=(a.fields?.trailText||'').replace(/<[^>]*>/g,'').substring(0,150);
+        const n=JSON.stringify({title:a.webTitle,img,summary,full:summary,time:fmtTime(a.webPublicationDate),link:a.webUrl}).replace(/'/g,"&#39;");
+        return `<div class="card" onclick='openModal(${n})'><img src="${img}" alt="${a.webTitle}" onerror="this.src='https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?w=600&h=400&fit=crop'"><div class="card-body"><span class="badge" style="background:#1a3a5c;">JOBS</span><h3>${a.webTitle}</h3><p>${summary}</p><div class="card-meta">⏱ ${fmtTime(a.webPublicationDate)}</div></div></div>`;
+      }).join('');
+    } else {el.innerHTML='<p style="padding:20px;color:#888;grid-column:1/-1;">No jobs news found.</p>';}
+  }catch{el.innerHTML='<p style="padding:20px;color:#888;grid-column:1/-1;">Error loading.</p>';}
+}
+
+// RECIPES
+function showRecipes(){
+  document.getElementById('recipesPage').classList.add('show');
+  document.body.style.overflow='hidden';
+}
+
+const recipeData={
+  biryani:{name:'🍚 Chicken Biryani',time:'1.5 hours',serves:'4-6',ingredients:['1 kg Chicken','3 cups Basmati rice','2 onions (sliced)','1 cup yogurt','4 tomatoes','Biryani masala 3 tbsp','Kewra water','Saffron','Oil/Ghee','Salt to taste'],steps:['Fry onions until golden brown','Add chicken and fry for 10 mins','Add tomatoes, yogurt and biryani masala','Cook until chicken is tender','Boil rice 70% done separately','Layer rice over chicken','Add saffron milk and kewra water','Cook on dum (low heat) 25 mins']},
+  karahi:{name:'🥘 Chicken Karahi',time:'45 mins',serves:'4',ingredients:['1 kg Chicken','4 tomatoes','4 green chilies','1 tbsp ginger garlic paste','1 tsp red chili','1 tsp coriander powder','Salt','Oil','Fresh coriander'],steps:['Heat oil in karahi/wok','Add chicken and fry on high heat','Add ginger garlic paste','Add tomatoes and cook until soft','Add all spices','Cook until oil separates','Add green chilies','Garnish with coriander and ginger']},
+  nihari:{name:'🍖 Nihari',time:'4-6 hours',serves:'6',ingredients:['1 kg beef/mutton','3 tbsp nihari masala','2 onions','Ginger','1/4 cup wheat flour','Oil','Salt'],steps:['Fry onions until golden','Add meat and fry well','Add nihari masala and water','Cook on low heat 4-6 hours','Mix flour in water and add','Cook 30 more mins','Garnish with ginger, lemon, coriander']},
+  halwa_puri:{name:'🫓 Halwa Puri',time:'1 hour',serves:'4',ingredients:['2 cups semolina (sooji)','1.5 cups sugar','1/2 cup ghee','Cardamom','2 cups flour (for puri)','Water','Oil for frying'],steps:['Roast sooji in ghee until golden','Add sugar syrup slowly','Cook until halwa thickens','Add cardamom','Knead puri dough stiff','Roll small puris','Deep fry until puffed']},
+  daal_chawal:{name:'🍛 Daal Chawal',time:'30 mins',serves:'4',ingredients:['1 cup yellow lentils (masoor dal)','2 cups rice','1 onion','2 tomatoes','1 tsp cumin','1 tsp turmeric','Red chili','Salt','Oil'],steps:['Boil lentils with turmeric and salt','Fry onions in oil','Add tomatoes and spices','Add boiled lentils','Cook rice separately','Serve daal over rice','Add tarka (tempering) on top']},
+  seekh_kebab:{name:'🍢 Seekh Kebab',time:'30 mins',serves:'4',ingredients:['500g minced meat','1 onion','2 green chilies','1 egg','Kebab masala 2 tbsp','Ginger garlic paste','Coriander','Salt'],steps:['Mix all ingredients well','Refrigerate 30 mins','Shape on skewers','Grill or pan fry','Turn until all sides cooked','Serve with raita and naan']},
+};
+
+function showRecipeDetail(recipe){
+  const r=recipeData[recipe];
+  if(!r)return;
+  document.getElementById('recipeContent').innerHTML=`
+    <h2 style="font-family:'Playfair Display',serif;font-size:24px;margin-bottom:6px;color:var(--text);">${r.name}</h2>
+    <div style="display:flex;gap:12px;margin-bottom:20px;flex-wrap:wrap;">
+      <span style="background:#8B0000;color:white;padding:4px 12px;border-radius:12px;font-size:12px;">⏱ ${r.time}</span>
+      <span style="background:#1a3a5c;color:white;padding:4px 12px;border-radius:12px;font-size:12px;">👥 ${r.serves} servings</span>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;flex-wrap:wrap;">
+      <div>
+        <h3 style="font-size:16px;margin-bottom:12px;color:var(--text);border-bottom:2px solid #c0392b;padding-bottom:6px;">🛒 Ingredients</h3>
+        <ul style="list-style:none;">${r.ingredients.map(i=>`<li style="padding:6px 0;border-bottom:1px solid var(--border);font-size:13px;color:var(--subtext);">• ${i}</li>`).join('')}</ul>
+      </div>
+      <div>
+        <h3 style="font-size:16px;margin-bottom:12px;color:var(--text);border-bottom:2px solid #c0392b;padding-bottom:6px;">👨‍🍳 Method</h3>
+        <ol style="padding-left:16px;">${r.steps.map(s=>`<li style="padding:6px 0;border-bottom:1px solid var(--border);font-size:13px;color:var(--subtext);">${s}</li>`).join('')}</ol>
+      </div>
+    </div>`;
+  document.getElementById('recipeModal').classList.add('show');
+}
+
 loadNews();
 setInterval(loadNews,5*60*1000);
 
-// Send notification for breaking news after load
 setTimeout(()=>{
-  if(allNews.length>0 && Notification.permission==='granted'){
+  if(allNews.length>0&&Notification.permission==='granted'){
     sendBreakingNotification(allNews[0].title,'Chang Herald Breaking News');
   }
 },3000);
