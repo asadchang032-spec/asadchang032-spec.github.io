@@ -382,32 +382,131 @@ footer{background:#0a0a0a;color:#999;margin-top:50px;}
 
 <!-- CRICKET PAGE -->
 <div class="page-overlay" id="cricketPage">
-  <div class="page-header">
+  <div class="page-header" style="background:linear-gradient(135deg,#1a7a3a,#0d4a1e);">
     <button class="page-back" onclick="closePage('cricketPage')">← Back</button>
-    <h1>🏏 Live Cricket Scores</h1>
+    <h1>🏏 Cricket Live Scores</h1>
+    <button onclick="loadCricket()" style="margin-left:auto;background:rgba(255,255,255,0.2);color:white;border:none;padding:8px 16px;border-radius:4px;cursor:pointer;font-size:12px;font-weight:700;">🔄 Refresh</button>
   </div>
   <div class="page-content">
-    <div class="info-card" style="text-align:center;background:linear-gradient(135deg,#1a7a3a,#0d4a1e);color:white;border:none;">
-      <h3 style="color:white;font-size:28px;">🏏 Cricket Live</h3>
-      <p style="color:rgba(255,255,255,0.8);margin-top:8px;">Pakistan & International Cricket Scores</p>
+    <!-- Live Matches -->
+    <div style="background:linear-gradient(135deg,#1a7a3a,#0d4a1e);color:white;padding:20px;border-radius:4px;margin-bottom:20px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+        <div>
+          <div style="font-size:20px;font-weight:700;">🏏 Live Scores</div>
+          <div style="font-size:12px;opacity:0.7;margin-top:2px;" id="cricketTime">Updated just now</div>
+        </div>
+        <div style="background:rgba(255,0,0,0.7);padding:4px 12px;border-radius:12px;font-size:12px;font-weight:700;animation:blink 1s infinite;">🔴 LIVE</div>
+      </div>
+      <div id="liveMatches"><div style="text-align:center;padding:20px;opacity:0.7;">Loading live matches...</div></div>
     </div>
-    <div id="cricketScores"><div class="spin"><div class="spinner"></div><br>Loading cricket scores...</div></div>
+
+    <!-- Pakistan Schedule -->
+    <div class="info-card">
+      <h3>🇵🇰 Pakistan Cricket Schedule 2025-26</h3>
+      <div style="overflow-x:auto;">
+        <table style="width:100%;border-collapse:collapse;font-size:13px;">
+          <tr style="background:var(--red);color:white;">
+            <th style="padding:10px;text-align:left;">Series</th>
+            <th style="padding:10px;">Format</th>
+            <th style="padding:10px;">Venue</th>
+            <th style="padding:10px;">Status</th>
+          </tr>
+          <tr style="border-bottom:1px solid var(--border);">
+            <td style="padding:10px;">Pakistan vs England</td>
+            <td style="padding:10px;text-align:center;"><span style="background:#1a6ea8;color:white;padding:2px 8px;border-radius:10px;font-size:11px;">TEST</span></td>
+            <td style="padding:10px;text-align:center;">Pakistan</td>
+            <td style="padding:10px;text-align:center;"><span style="background:#1a7a3a;color:white;padding:2px 8px;border-radius:10px;font-size:11px;">Upcoming</span></td>
+          </tr>
+          <tr style="border-bottom:1px solid var(--border);background:var(--bg);">
+            <td style="padding:10px;">PSL 2026</td>
+            <td style="padding:10px;text-align:center;"><span style="background:#c0392b;color:white;padding:2px 8px;border-radius:10px;font-size:11px;">T20</span></td>
+            <td style="padding:10px;text-align:center;">Pakistan</td>
+            <td style="padding:10px;text-align:center;"><span style="background:#b06000;color:white;padding:2px 8px;border-radius:10px;font-size:11px;">2026</span></td>
+          </tr>
+          <tr style="border-bottom:1px solid var(--border);">
+            <td style="padding:10px;">ICC Champions Trophy</td>
+            <td style="padding:10px;text-align:center;"><span style="background:#1a6ea8;color:white;padding:2px 8px;border-radius:10px;font-size:11px;">ODI</span></td>
+            <td style="padding:10px;text-align:center;">Pakistan/India</td>
+            <td style="padding:10px;text-align:center;"><span style="background:#1a7a3a;color:white;padding:2px 8px;border-radius:10px;font-size:11px;">Completed</span></td>
+          </tr>
+        </table>
+      </div>
+    </div>
+
+    <!-- Cricket News -->
+    <div class="sec-title">📰 Latest Cricket News</div>
+    <div class="grid3" id="cricketScores"><div class="spin" style="grid-column:1/-1;"><div class="spinner"></div></div></div>
   </div>
 </div>
 
 <!-- GTA 6 PAGE -->
 <div class="page-overlay" id="gta6Page">
-  <div class="page-header" style="background:linear-gradient(135deg,#1a1a2e,#16213e);">
+  <div class="page-header" style="background:linear-gradient(135deg,#0d0d1a,#1a0a2e);">
     <button class="page-back" onclick="closePage('gta6Page')">← Back</button>
-    <h1 style="color:#f39c12;">🎮 GTA 6 Updates</h1>
+    <h1 style="color:#f39c12;">🎮 GTA VI Hub</h1>
   </div>
   <div class="page-content">
-    <div style="background:linear-gradient(135deg,#1a1a2e,#16213e);color:white;padding:30px;text-align:center;border-radius:4px;margin-bottom:24px;">
-      <div style="font-size:48px;margin-bottom:10px;">🎮</div>
-      <h2 style="font-family:'Playfair Display',serif;font-size:28px;color:#f39c12;">Grand Theft Auto VI</h2>
-      <p style="color:rgba(255,255,255,0.7);margin-top:8px;">Latest news, release dates, trailers & updates</p>
+    <!-- Hero Banner -->
+    <div style="background:linear-gradient(135deg,#0d0d1a,#1a0a2e);color:white;padding:40px 30px;border-radius:8px;margin-bottom:24px;text-align:center;border:1px solid #f39c12;">
+      <div style="font-size:56px;margin-bottom:12px;">🎮</div>
+      <div style="font-family:'Playfair Display',serif;font-size:36px;font-weight:900;color:#f39c12;letter-spacing:3px;">GRAND THEFT AUTO VI</div>
+      <div style="font-size:13px;color:rgba(255,255,255,0.6);margin-top:6px;letter-spacing:2px;">ROCKSTAR GAMES</div>
+      <div style="display:flex;justify-content:center;gap:12px;margin-top:20px;flex-wrap:wrap;">
+        <div style="background:rgba(243,156,18,0.2);border:1px solid #f39c12;padding:10px 20px;border-radius:4px;">
+          <div style="font-size:11px;color:#f39c12;font-weight:700;">RELEASE DATE</div>
+          <div style="font-size:16px;font-weight:700;margin-top:4px;">2025</div>
+        </div>
+        <div style="background:rgba(243,156,18,0.2);border:1px solid #f39c12;padding:10px 20px;border-radius:4px;">
+          <div style="font-size:11px;color:#f39c12;font-weight:700;">PLATFORMS</div>
+          <div style="font-size:16px;font-weight:700;margin-top:4px;">PS5 | Xbox | PC</div>
+        </div>
+        <div style="background:rgba(243,156,18,0.2);border:1px solid #f39c12;padding:10px 20px;border-radius:4px;">
+          <div style="font-size:11px;color:#f39c12;font-weight:700;">SETTING</div>
+          <div style="font-size:16px;font-weight:700;margin-top:4px;">Vice City (Florida)</div>
+        </div>
+        <div style="background:rgba(243,156,18,0.2);border:1px solid #f39c12;padding:10px 20px;border-radius:4px;">
+          <div style="font-size:11px;color:#f39c12;font-weight:700;">TRAILER</div>
+          <div style="font-size:16px;font-weight:700;margin-top:4px;">OUT NOW 🎬</div>
+        </div>
+      </div>
+      <a href="https://www.youtube.com/watch?v=QdBZExpgErs" target="_blank" style="display:inline-block;margin-top:20px;background:#f39c12;color:#000;padding:12px 28px;text-decoration:none;font-weight:700;border-radius:4px;font-size:14px;">▶ Watch Official Trailer</a>
     </div>
-    <div id="gta6News"><div class="spin"><div class="spinner"></div><br>Loading GTA 6 updates...</div></div>
+
+    <!-- GTA 6 Key Facts -->
+    <div class="info-card" style="background:#0d0d1a;border:1px solid #333;color:white;">
+      <h3 style="color:#f39c12;">📋 GTA 6 — What We Know</h3>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px;">
+        <div style="background:rgba(255,255,255,0.05);padding:12px;border-radius:4px;">
+          <div style="color:#f39c12;font-size:11px;font-weight:700;margin-bottom:6px;">🗺️ MAP</div>
+          <div style="font-size:13px;color:#ddd;">Vice City (Miami inspired) — largest GTA map ever</div>
+        </div>
+        <div style="background:rgba(255,255,255,0.05);padding:12px;border-radius:4px;">
+          <div style="color:#f39c12;font-size:11px;font-weight:700;margin-bottom:6px;">👤 PROTAGONIST</div>
+          <div style="font-size:13px;color:#ddd;">Lucia (first female lead) + Jason — dual protagonists</div>
+        </div>
+        <div style="background:rgba(255,255,255,0.05);padding:12px;border-radius:4px;">
+          <div style="color:#f39c12;font-size:11px;font-weight:700;margin-bottom:6px;">🎮 GAMEPLAY</div>
+          <div style="font-size:13px;color:#ddd;">Open world, heists, social media mechanics, online multiplayer</div>
+        </div>
+        <div style="background:rgba(255,255,255,0.05);padding:12px;border-radius:4px;">
+          <div style="color:#f39c12;font-size:11px;font-weight:700;margin-bottom:6px;">💰 BUDGET</div>
+          <div style="font-size:13px;color:#ddd;">$2+ Billion — most expensive game ever made</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Latest GTA 6 News -->
+    <div class="sec-title" style="color:var(--text);">📰 Latest GTA 6 News & Updates</div>
+    <div class="grid3" id="gta6News"><div class="spin" style="grid-column:1/-1;"><div class="spinner"></div></div></div>
+
+    <!-- Official Links -->
+    <div class="info-card" style="background:#0d0d1a;border:1px solid #f39c12;margin-top:20px;">
+      <h3 style="color:#f39c12;">🔗 Official Links</h3>
+      <div style="display:flex;flex-direction:column;gap:10px;margin-top:12px;">
+        <a href="https://www.rockstargames.com/VI" target="_blank" style="background:#f39c12;color:#000;padding:12px 20px;text-decoration:none;border-radius:4px;font-size:13px;font-weight:700;text-align:center;">🎮 Official GTA 6 Website — Rockstar Games</a>
+        <a href="https://www.youtube.com/watch?v=QdBZExpgErs" target="_blank" style="background:#ff0000;color:white;padding:12px 20px;text-decoration:none;border-radius:4px;font-size:13px;font-weight:700;text-align:center;">▶ Watch Trailer 1 on YouTube</a>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -782,30 +881,34 @@ function showCricket(){
 
 async function loadCricket(){
   const el=document.getElementById('cricketScores');
+  const liveHTML=`<div style="background:linear-gradient(135deg,#1a7a3a,#0d4a1e);color:white;padding:20px;border-radius:6px;margin-bottom:20px;">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+      <div style="font-size:16px;font-weight:700;">🏏 Live Scores</div>
+      <a href="https://www.espncricinfo.com/live-cricket-score" target="_blank" style="background:rgba(255,255,255,0.2);color:white;padding:6px 14px;border-radius:4px;text-decoration:none;font-size:12px;font-weight:700;">ESPN CricInfo →</a>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+      <a href="https://www.espncricinfo.com/live-cricket-score" target="_blank" style="background:rgba(255,255,255,0.15);padding:14px;border-radius:4px;text-decoration:none;color:white;display:block;"><div style="font-size:11px;opacity:0.8;margin-bottom:6px;">🔴 LIVE</div><div style="font-size:14px;font-weight:700;">ESPN CricInfo</div></a>
+      <a href="https://www.cricbuzz.com/cricket-match/live-scores" target="_blank" style="background:rgba(255,255,255,0.15);padding:14px;border-radius:4px;text-decoration:none;color:white;display:block;"><div style="font-size:11px;opacity:0.8;margin-bottom:6px;">🔴 LIVE</div><div style="font-size:14px;font-weight:700;">CricBuzz</div></a>
+      <a href="https://www.pcb.com.pk" target="_blank" style="background:rgba(255,255,255,0.15);padding:14px;border-radius:4px;text-decoration:none;color:white;display:block;"><div style="font-size:11px;opacity:0.8;margin-bottom:6px;">🇵🇰 OFFICIAL</div><div style="font-size:14px;font-weight:700;">PCB Official</div></a>
+      <a href="https://www.icc-cricket.com/rankings/mens/player-rankings/test" target="_blank" style="background:rgba(255,255,255,0.15);padding:14px;border-radius:4px;text-decoration:none;color:white;display:block;"><div style="font-size:11px;opacity:0.8;margin-bottom:6px;">🌍 ICC</div><div style="font-size:14px;font-weight:700;">ICC Rankings</div></a>
+    </div>
+  </div>`;
+  el.innerHTML=liveHTML+'<div class="sec-title" style="margin-bottom:16px;">📰 Pakistan Cricket News</div><div class="grid3" id="cricketNewsGrid"><div class="spin"><div class="spinner"></div></div></div>';
   try{
-    const r=await fetch(`https://content.guardianapis.com/search?api-key=${GUARDIAN_KEY}&q=cricket+pakistan+test+odi+t20&show-fields=thumbnail,trailText&page-size=9&order-by=newest&section=sport`);
+    const r=await fetch(`https://content.guardianapis.com/search?api-key=${GUARDIAN_KEY}&q=pakistan+cricket&show-fields=thumbnail,trailText&page-size=9&order-by=newest&section=sport`);
     const d=await r.json();
+    const grid=document.getElementById('cricketNewsGrid');
     if(d.response?.results?.length){
-      el.innerHTML=`<div style="margin-bottom:20px;">
-        <div style="background:linear-gradient(135deg,#1a7a3a,#0d4a1e);color:white;padding:16px;border-radius:4px;margin-bottom:16px;">
-          <div style="font-size:12px;opacity:0.8;margin-bottom:4px;">🔴 LIVE / RECENT</div>
-          <div style="font-size:18px;font-weight:700;">Pakistan Cricket Updates</div>
-          <div style="font-size:12px;opacity:0.8;margin-top:4px;">Updated: ${new Date().toLocaleTimeString()}</div>
-        </div>
-      </div>
-      <div class="grid3">${d.response.results.map(a=>{
+      grid.innerHTML=d.response.results.map(a=>{
         const img=a.fields?.thumbnail||'https://images.unsplash.com/photo-1540747913346-19212a4b423c?w=600&h=400&fit=crop';
         const summary=(a.fields?.trailText||'').replace(/<[^>]*>/g,'').substring(0,150);
         const n=JSON.stringify({title:a.webTitle,img,summary,full:summary,time:fmtTime(a.webPublicationDate),link:a.webUrl}).replace(/'/g,"&#39;");
         return `<div class="card" onclick='openModal(${n})'><img src="${img}" alt="${a.webTitle}" onerror="this.src='https://images.unsplash.com/photo-1540747913346-19212a4b423c?w=600&h=400&fit=crop'"><div class="card-body"><span class="badge b-sp">CRICKET</span><h3>${a.webTitle}</h3><p>${summary}</p><div class="card-meta">⏱ ${fmtTime(a.webPublicationDate)}</div></div></div>`;
-      }).join('')}</div>`;
-    } else {
-      el.innerHTML='<p style="padding:20px;color:#888;">No cricket news found right now.</p>';
-    }
-  }catch{el.innerHTML='<p style="padding:20px;color:#888;">Error loading cricket scores. Please try again.</p>';}
+      }).join('');
+    } else {grid.innerHTML='<p style="padding:20px;color:#888;grid-column:1/-1;">No cricket news found.</p>';}
+  }catch{document.getElementById('cricketNewsGrid').innerHTML='<p style="padding:20px;color:#888;grid-column:1/-1;">Error loading.</p>';}
 }
 
-// GTA 6
 function showGTA6(){
   document.getElementById('gta6Page').classList.add('show');
   document.body.style.overflow='hidden';
@@ -814,30 +917,51 @@ function showGTA6(){
 
 async function loadGTA6(){
   const el=document.getElementById('gta6News');
-  try{
-    const r=await fetch(`https://content.guardianapis.com/search?api-key=${GUARDIAN_KEY}&q=GTA+6+Grand+Theft+Auto+VI+Rockstar&show-fields=thumbnail,trailText,bodyText&page-size=9&order-by=newest`);
-    const d=await r.json();
-    if(d.response?.results?.length){
-      el.innerHTML=`<div style="background:#1a1a2e;border:1px solid #f39c12;padding:16px;border-radius:4px;margin-bottom:20px;color:white;">
-        <div style="font-size:13px;color:#f39c12;font-weight:700;margin-bottom:6px;">🎮 GTA 6 — Latest Updates</div>
-        <div style="font-size:12px;color:rgba(255,255,255,0.6);">Release Date: 2025 | Developer: Rockstar Games | Platform: PS5, Xbox Series X, PC</div>
+  const infoHTML=`<div style="background:linear-gradient(135deg,#1a1a2e,#16213e);border:2px solid #f39c12;padding:24px;border-radius:6px;margin-bottom:24px;color:white;">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;">
+      <div>
+        <div style="color:#f39c12;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:12px;">🎮 GAME INFO</div>
+        <div style="font-size:13px;line-height:2;color:rgba(255,255,255,0.8);">
+          <div>🏢 <strong style="color:white;">Developer:</strong> Rockstar Games</div>
+          <div>📅 <strong style="color:white;">Release:</strong> 2025</div>
+          <div>🎮 <strong style="color:white;">Platforms:</strong> PS5, Xbox Series X</div>
+          <div>🗺️ <strong style="color:white;">Setting:</strong> Vice City (Miami)</div>
+          <div>👤 <strong style="color:white;">Protagonist:</strong> Lucia + Jason</div>
+        </div>
       </div>
-      <div class="grid3">${d.response.results.map(a=>{
+      <div>
+        <div style="color:#f39c12;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:12px;">🔗 OFFICIAL LINKS</div>
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <a href="https://www.rockstargames.com/VI" target="_blank" style="background:#f39c12;color:#000;padding:8px 16px;text-decoration:none;border-radius:3px;font-size:12px;font-weight:700;text-align:center;">🌐 Official Website</a>
+          <a href="https://www.youtube.com/watch?v=QdBZExpgErs" target="_blank" style="background:#ff0000;color:white;padding:8px 16px;text-decoration:none;border-radius:3px;font-size:12px;font-weight:700;text-align:center;">▶️ Official Trailer</a>
+          <a href="https://www.ign.com/games/grand-theft-auto-vi" target="_blank" style="background:#333;color:white;padding:8px 16px;text-decoration:none;border-radius:3px;font-size:12px;font-weight:700;text-align:center;">📰 IGN Coverage</a>
+        </div>
+      </div>
+    </div>
+    <div style="background:rgba(243,156,18,0.15);border:1px solid #f39c12;padding:12px;border-radius:4px;">
+      <div style="color:#f39c12;font-weight:700;font-size:13px;margin-bottom:4px;">⚡ Latest Update</div>
+      <div style="color:rgba(255,255,255,0.8);font-size:13px;">GTA VI Trailer 2 released! Game set in Leonida (Vice City). First female protagonist Lucia alongside Jason.</div>
+    </div>
+  </div>
+  <div class="sec-title" style="margin-bottom:16px;">📰 Latest GTA 6 News</div>
+  <div class="grid3" id="gta6NewsGrid"><div class="spin"><div class="spinner"></div></div></div>`;
+  el.innerHTML=infoHTML;
+  try{
+    const r=await fetch(`https://content.guardianapis.com/search?api-key=${GUARDIAN_KEY}&q=GTA+6+Grand+Theft+Auto+Rockstar+Games&show-fields=thumbnail,trailText,bodyText&page-size=9&order-by=newest`);
+    const d=await r.json();
+    const grid=document.getElementById('gta6NewsGrid');
+    if(d.response?.results?.length){
+      grid.innerHTML=d.response.results.map(a=>{
         const img=a.fields?.thumbnail||'https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=600&h=400&fit=crop';
         const summary=(a.fields?.trailText||'').replace(/<[^>]*>/g,'').substring(0,150);
         const full=(a.fields?.bodyText||summary).replace(/<[^>]*>/g,'').substring(0,1000);
         const n=JSON.stringify({title:a.webTitle,img,summary,full,time:fmtTime(a.webPublicationDate),link:a.webUrl}).replace(/'/g,"&#39;");
         return `<div class="card" onclick='openModal(${n})'><img src="${img}" alt="${a.webTitle}" onerror="this.src='https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=600&h=400&fit=crop'"><div class="card-body"><span class="badge" style="background:#f39c12;color:#000;">GTA 6</span><h3>${a.webTitle}</h3><p>${summary}</p><div class="card-meta">⏱ ${fmtTime(a.webPublicationDate)}</div></div></div>`;
-      }).join('')}</div>`;
+      }).join('');
     } else {
-      el.innerHTML=`<div style="text-align:center;padding:40px;">
-        <div style="font-size:60px;margin-bottom:16px;">🎮</div>
-        <h3 style="font-family:'Playfair Display',serif;font-size:22px;margin-bottom:10px;color:var(--text);">GTA 6 Latest News</h3>
-        <p style="color:var(--subtext);font-size:14px;margin-bottom:20px;">No recent GTA 6 articles found. Check back later!</p>
-        <a href="https://www.rockstargames.com/VI" target="_blank" style="background:#f39c12;color:#000;padding:12px 24px;text-decoration:none;font-weight:700;border-radius:3px;font-size:14px;">Visit Rockstar Games Official →</a>
-      </div>`;
+      grid.innerHTML=`<div style="grid-column:1/-1;text-align:center;padding:30px;"><p style="color:var(--subtext);margin-bottom:16px;">No recent articles. Visit these for latest GTA 6 news:</p><div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;"><a href="https://www.ign.com/games/grand-theft-auto-vi" target="_blank" style="background:#333;color:white;padding:10px 20px;text-decoration:none;border-radius:3px;font-size:13px;font-weight:700;">IGN</a><a href="https://www.gamespot.com/grand-theft-auto-vi/" target="_blank" style="background:#333;color:white;padding:10px 20px;text-decoration:none;border-radius:3px;font-size:13px;font-weight:700;">GameSpot</a><a href="https://www.rockstargames.com/VI" target="_blank" style="background:#f39c12;color:#000;padding:10px 20px;text-decoration:none;border-radius:3px;font-size:13px;font-weight:700;">Rockstar Official</a></div></div>`;
     }
-  }catch{el.innerHTML='<p style="padding:20px;color:#888;">Error loading updates. Please try again.</p>';}
+  }catch{document.getElementById('gta6NewsGrid').innerHTML='<p style="padding:20px;color:#888;grid-column:1/-1;">Error loading.</p>';}
 }
 
 // URDU NEWS
