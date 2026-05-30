@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Contact Chang Herald - Send news tips, advertise, or get in touch with Asad Ali Chang. Khairpur Mirs, Sindh, Pakistan.">
+<meta name="keywords" content="Contact Chang Herald, Asad Ali Chang contact, Pakistan news contact, advertise Chang Herald">
+<title>Contact Us | Chang Herald - Pakistan News</title>
+<link rel="canonical" href="https://asadchang032-spec.github.io/contact/">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script>emailjs.init('b-mXdYuoZU2A3Ntnh');</script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{--red:#c0392b;--gold:#d4a017;--bg:#f4f2ed;--card:#fff;--text:#0a0a0a;--subtext:#555;--border:#e0ddd5;--gray:#666;}
+[data-theme="dark"]{--bg:#121212;--card:#1e1e1e;--text:#f0f0f0;--subtext:#bbb;--border:#333;--gray:#aaa;}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);}
+.topbar{background:#111;color:#bbb;font-size:12px;padding:7px 24px;display:flex;justify-content:space-between;align-items:center;}
+.live-clock{color:var(--gold);font-weight:700;}
+.social-btn{padding:3px 10px;border-radius:2px;font-size:11px;font-weight:700;color:white;text-decoration:none;margin-left:6px;}
+.fb{background:#1877f2;}.wa{background:#25d366;}
+.dark-btn{background:#333;color:#fff;border:none;padding:4px 12px;border-radius:12px;cursor:pointer;font-size:11px;font-weight:700;margin-left:6px;}
+header{background:var(--card);border-bottom:4px solid var(--red);padding:14px 24px;text-align:center;}
+.masthead{font-family:'Playfair Display',serif;font-size:clamp(24px,4vw,52px);font-weight:900;letter-spacing:3px;}
+.masthead span{color:var(--red);}
+nav{background:#0a0a0a;position:sticky;top:0;z-index:100;}
+.nav-inner{max-width:1320px;margin:0 auto;display:flex;align-items:center;padding:0 24px;overflow-x:auto;}
+nav a{color:#ccc;text-decoration:none;font-size:12px;font-weight:600;padding:13px 13px;text-transform:uppercase;border-bottom:3px solid transparent;white-space:nowrap;display:block;}
+nav a:hover,nav a.active{color:white;border-bottom-color:var(--red);}
+.container{max-width:900px;margin:40px auto;padding:0 24px 60px;}
+.page-title{font-family:'Playfair Display',serif;font-size:32px;margin-bottom:24px;padding-bottom:12px;border-bottom:3px solid var(--red);color:var(--text);}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:24px;}
+.info-card{background:var(--card);border:1px solid var(--border);padding:24px;border-radius:4px;margin-bottom:20px;}
+.info-card h2{font-family:'Playfair Display',serif;font-size:18px;margin-bottom:12px;color:var(--text);}
+.info-card p{font-size:14px;color:var(--subtext);line-height:1.8;}
+input,textarea,select{width:100%;padding:12px 16px;border:1px solid var(--border);background:var(--card);color:var(--text);font-size:14px;margin-bottom:14px;border-radius:3px;font-family:'Inter',sans-serif;}
+textarea{height:130px;resize:vertical;}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.btn-send{background:var(--red);color:white;border:none;padding:13px 28px;font-size:14px;font-weight:700;cursor:pointer;border-radius:3px;width:100%;}
+.success-msg{display:none;margin-top:12px;padding:12px;background:#e8f5e9;color:#2e7d32;border-radius:3px;font-size:14px;}
+.contact-link{display:block;background:var(--bg);padding:12px 16px;border-radius:3px;text-decoration:none;color:var(--text);margin-bottom:10px;font-size:14px;border:1px solid var(--border);}
+.contact-link:hover{border-color:var(--red);}
+footer{background:#0a0a0a;color:#888;padding:30px 24px;text-align:center;margin-top:50px;}
+.f-logo{font-family:'Playfair Display',serif;font-size:22px;color:white;margin-bottom:8px;}
+.f-logo span{color:var(--red);}
+.f-links{display:flex;justify-content:center;gap:20px;flex-wrap:wrap;margin:12px 0;}
+.f-links a{color:#888;text-decoration:none;font-size:12px;}
+@media(max-width:700px){.grid2{grid-template-columns:1fr;}.form-row{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <span>📍 Khairpur Mirs, Sindh | Chang Herald</span>
+  <div style="display:flex;align-items:center;">
+    <span class="live-clock" id="liveTime"></span>
+    <a href="https://web.facebook.com/profile.php?id=61590307594283" target="_blank" class="social-btn fb">Facebook</a>
+    <a href="https://wa.me/923012326400" target="_blank" class="social-btn wa">WhatsApp</a>
+    <button class="dark-btn" onclick="toggleDark()" id="darkBtn">🌙 Dark</button>
+  </div>
+</div>
+<header>
+  <a href="/" style="text-decoration:none;">
+    <div class="masthead">CHANG <span>HERALD</span></div>
+    <div style="font-size:11px;letter-spacing:4px;color:var(--gray);text-transform:uppercase;margin-top:4px;">Truth · Transparency · Pakistan & World</div>
+  </a>
+</header>
+<nav>
+  <div class="nav-inner">
+    <a href="/">🏠 Home</a>
+    <a href="/pakistan/">🇵🇰 Pakistan</a>
+    <a href="/sindh/">🗺️ Sindh</a>
+    <a href="/world/">🌍 World</a>
+    <a href="/sports/">🏏 Sports</a>
+    <a href="/business/">💹 Business</a>
+    <a href="/tech/">💻 Tech</a>
+    <a href="/about/">ℹ️ About</a>
+    <a href="/contact/" class="active">📬 Contact</a>
+  </div>
+</nav>
+<div class="container">
+  <h1 class="page-title">📬 Contact Us</h1>
+  <div class="grid2">
+    <div>
+      <div class="info-card">
+        <h2>Send Us a Message</h2>
+        <p style="margin-bottom:16px;font-size:13px;">News tip, feedback, or advertisement inquiry?</p>
+        <div class="form-row">
+          <input type="text" id="cName" placeholder="Your Full Name *">
+          <input type="email" id="cEmail" placeholder="Your Email *">
+        </div>
+        <select id="cSubject">
+          <option value="">Select Subject *</option>
+          <option>News Tip / Story</option>
+          <option>Advertise With Us</option>
+          <option>General Inquiry</option>
+          <option>Feedback / Complaint</option>
+          <option>Partnership</option>
+        </select>
+        <textarea id="cMessage" placeholder="Your Message *"></textarea>
+        <button class="btn-send" onclick="sendContact()">📤 Send Message</button>
+        <div class="success-msg" id="contactMsg">✅ Message sent! We'll reply within 24 hours.</div>
+      </div>
+    </div>
+    <div>
+      <div class="info-card">
+        <h2>📍 Our Address</h2>
+        <p>Village Ali Muhammad Chang<br>Talka Faiz Gunj<br>District Khairpur Mirs<br>Sindh, Pakistan</p>
+      </div>
+      <div class="info-card">
+        <h2>📞 Contact Details</h2>
+        <a href="tel:+923012326400" class="contact-link">📱 +92 301 2326400</a>
+        <a href="mailto:asadsindhi400@gmail.com" class="contact-link">✉️ asadsindhi400@gmail.com</a>
+        <a href="https://wa.me/923012326400" target="_blank" class="contact-link">💬 WhatsApp Us</a>
+        <a href="https://web.facebook.com/profile.php?id=61590307594283" target="_blank" class="contact-link">📘 Facebook Page</a>
+      </div>
+      <div class="info-card">
+        <h2>🕐 Response Time</h2>
+        <p>We typically respond within <strong>24 hours</strong>. For urgent news tips, WhatsApp is fastest!</p>
+      </div>
+    </div>
+  </div>
+</div>
+<footer>
+  <div class="f-logo">CHANG <span>HERALD</span></div>
+  <p style="font-size:13px;margin-bottom:10px;">Founded by Asad Ali Chang | Khairpur Mirs, Sindh</p>
+  <div class="f-links">
+    <a href="/">Home</a><a href="/pakistan/">Pakistan</a><a href="/world/">World</a>
+    <a href="/sports/">Sports</a><a href="/about/">About</a><a href="/contact/">Contact</a>
+  </div>
+  <p style="font-size:11px;margin-top:10px;">© 2026 Chang Herald. All Rights Reserved.</p>
+</footer>
+<script>
+function toggleDark(){const h=document.documentElement;const d=h.getAttribute('data-theme')==='dark';h.setAttribute('data-theme',d?'light':'dark');document.getElementById('darkBtn').textContent=d?'🌙 Dark':'☀️ Light';localStorage.setItem('ch_theme',d?'light':'dark');}
+const t=localStorage.getItem('ch_theme');if(t){document.documentElement.setAttribute('data-theme',t);document.getElementById('darkBtn').textContent=t==='dark'?'☀️ Light':'🌙 Dark';}
+function tickClock(){const now=new Date();const pk=new Date(now.getTime()+(5*60*60*1000));let h=pk.getUTCHours();const m=pk.getUTCMinutes();const ap=h>=12?'PM':'AM';h=h%12||12;document.getElementById('liveTime').textContent=h+':'+String(m).padStart(2,'0')+' '+ap+' PKT';}
+setInterval(tickClock,1000);tickClock();
+function sendContact(){
+  const name=document.getElementById('cName').value.trim();
+  const email=document.getElementById('cEmail').value.trim();
+  const subject=document.getElementById('cSubject').value;
+  const message=document.getElementById('cMessage').value.trim();
+  if(!name||!email||!subject||!message){alert('Please fill all fields!');return;}
+  const btn=document.querySelector('.btn-send');btn.textContent='Sending...';btn.disabled=true;
+  emailjs.send('service_daynrwl','template_otfqo2d',{subscriber_email:email,email:'asadsindhi400@gmail.com',name:`Contact: ${name} | ${subject} | ${message.substring(0,200)}`}).then(()=>{
+    document.getElementById('contactMsg').style.display='block';
+    document.getElementById('cName').value='';document.getElementById('cEmail').value='';document.getElementById('cSubject').value='';document.getElementById('cMessage').value='';
+    btn.textContent='📤 Send Message';btn.disabled=false;
+  }).catch(()=>{alert('Error. Email: asadsindhi400@gmail.com');btn.textContent='📤 Send Message';btn.disabled=false;});
+}
+</script>
+</body>
+</html>
