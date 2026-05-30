@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="About Chang Herald - Pakistan's trusted digital news platform founded by Asad Ali Chang from Khairpur Mirs, Sindh.">
+<meta name="keywords" content="Chang Herald about, Asad Ali Chang, Pakistan news website, Khairpur Mirs journalist">
+<title>About Us | Chang Herald - Pakistan News</title>
+<link rel="canonical" href="https://asadchang032-spec.github.io/about/">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{--red:#c0392b;--gold:#d4a017;--bg:#f4f2ed;--card:#fff;--text:#0a0a0a;--subtext:#555;--border:#e0ddd5;--gray:#666;}
+[data-theme="dark"]{--bg:#121212;--card:#1e1e1e;--text:#f0f0f0;--subtext:#bbb;--border:#333;--gray:#aaa;}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);}
+.topbar{background:#111;color:#bbb;font-size:12px;padding:7px 24px;display:flex;justify-content:space-between;align-items:center;}
+.live-clock{color:var(--gold);font-weight:700;}
+.social-btn{padding:3px 10px;border-radius:2px;font-size:11px;font-weight:700;color:white;text-decoration:none;margin-left:6px;}
+.fb{background:#1877f2;}.wa{background:#25d366;}
+.dark-btn{background:#333;color:#fff;border:none;padding:4px 12px;border-radius:12px;cursor:pointer;font-size:11px;font-weight:700;margin-left:6px;}
+header{background:var(--card);border-bottom:4px solid var(--red);padding:14px 24px;text-align:center;}
+.masthead{font-family:'Playfair Display',serif;font-size:clamp(24px,4vw,52px);font-weight:900;letter-spacing:3px;}
+.masthead span{color:var(--red);}
+nav{background:#0a0a0a;position:sticky;top:0;z-index:100;}
+.nav-inner{max-width:1320px;margin:0 auto;display:flex;align-items:center;padding:0 24px;overflow-x:auto;}
+nav a{color:#ccc;text-decoration:none;font-size:12px;font-weight:600;padding:13px 13px;text-transform:uppercase;border-bottom:3px solid transparent;white-space:nowrap;display:block;}
+nav a:hover,nav a.active{color:white;border-bottom-color:var(--red);}
+.container{max-width:900px;margin:40px auto;padding:0 24px 60px;}
+.hero-box{background:var(--red);color:white;padding:40px;text-align:center;border-radius:4px;margin-bottom:30px;}
+.hero-box h1{font-family:'Playfair Display',serif;font-size:42px;letter-spacing:3px;}
+.hero-box p{font-size:13px;letter-spacing:4px;margin-top:8px;opacity:0.9;}
+.info-card{background:var(--card);border:1px solid var(--border);padding:28px;border-radius:4px;margin-bottom:20px;}
+.info-card h2{font-family:'Playfair Display',serif;font-size:22px;margin-bottom:14px;color:var(--text);}
+.info-card p{font-size:14px;color:var(--subtext);line-height:1.9;margin-bottom:10px;}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;text-align:center;}
+.stat{background:var(--bg);padding:20px;border-radius:4px;}
+.stat-num{font-size:32px;font-weight:700;color:var(--red);}
+.stat-label{font-size:13px;color:var(--gray);}
+footer{background:#0a0a0a;color:#888;padding:30px 24px;text-align:center;margin-top:50px;}
+.f-logo{font-family:'Playfair Display',serif;font-size:22px;color:white;margin-bottom:8px;}
+.f-logo span{color:var(--red);}
+.f-links{display:flex;justify-content:center;gap:20px;flex-wrap:wrap;margin:12px 0;}
+.f-links a{color:#888;text-decoration:none;font-size:12px;}
+.f-links a:hover{color:var(--gold);}
+@media(max-width:600px){.stats{grid-template-columns:1fr 1fr;}}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <span>📍 Khairpur Mirs, Sindh | Chang Herald</span>
+  <div style="display:flex;align-items:center;">
+    <span class="live-clock" id="liveTime"></span>
+    <a href="https://web.facebook.com/profile.php?id=61590307594283" target="_blank" class="social-btn fb">Facebook</a>
+    <a href="https://wa.me/923012326400" target="_blank" class="social-btn wa">WhatsApp</a>
+    <button class="dark-btn" onclick="toggleDark()" id="darkBtn">🌙 Dark</button>
+  </div>
+</div>
+<header>
+  <a href="/" style="text-decoration:none;">
+    <div class="masthead">CHANG <span>HERALD</span></div>
+    <div style="font-size:11px;letter-spacing:4px;color:var(--gray);text-transform:uppercase;margin-top:4px;">Truth · Transparency · Pakistan & World</div>
+  </a>
+</header>
+<nav>
+  <div class="nav-inner">
+    <a href="/">🏠 Home</a>
+    <a href="/pakistan/">🇵🇰 Pakistan</a>
+    <a href="/sindh/">🗺️ Sindh</a>
+    <a href="/world/">🌍 World</a>
+    <a href="/sports/">🏏 Sports</a>
+    <a href="/business/">💹 Business</a>
+    <a href="/tech/">💻 Tech</a>
+    <a href="/about/" class="active">ℹ️ About</a>
+    <a href="/contact/">📬 Contact</a>
+  </div>
+</nav>
+<div class="container">
+  <div class="hero-box">
+    <h1>CHANG <span style="color:var(--gold);">HERALD</span></h1>
+    <p>TRUTH · TRANSPARENCY · PAKISTAN & WORLD</p>
+  </div>
+  <div class="info-card">
+    <h2>Our Mission</h2>
+    <p>Chang Herald is Pakistan's emerging digital news platform, dedicated to delivering accurate, timely, and unbiased journalism to the people of Pakistan and the world.</p>
+    <p>Founded by Asad Ali Chang from Khairpur Mirs, Sindh, our mission is to bring truthful reporting to every corner of Pakistan — from local Sindh news to international affairs.</p>
+  </div>
+  <div class="info-card">
+    <h2>👤 Founder & Editor-in-Chief</h2>
+    <div style="display:flex;gap:20px;align-items:flex-start;flex-wrap:wrap;">
+      <div style="width:80px;height:80px;background:var(--red);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:32px;flex-shrink:0;">👨‍💼</div>
+      <div>
+        <div style="font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:var(--text);">Asad Ali Chang</div>
+        <div style="color:var(--gold);font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin:6px 0 10px;">Founder & Editor-in-Chief</div>
+        <p>A passionate journalist and digital media entrepreneur from Khairpur Mirs, Sindh. Founded Chang Herald with a vision to create a trustworthy, modern news platform for Pakistani audiences.</p>
+        <p style="margin-top:8px;">📍 Village Ali Muhammad Chang, Talka Faiz Gunj, Khairpur Mirs, Sindh<br>📞 +92 301 2326400 | ✉️ asadsindhi400@gmail.com</p>
+      </div>
+    </div>
+  </div>
+  <div class="info-card">
+    <h2>📊 Our Platform</h2>
+    <div class="stats">
+      <div class="stat"><div class="stat-num">24/7</div><div class="stat-label">Live Coverage</div></div>
+      <div class="stat"><div class="stat-num">5min</div><div class="stat-label">Auto Updates</div></div>
+      <div class="stat"><div class="stat-num">100%</div><div class="stat-label">Free to Read</div></div>
+    </div>
+  </div>
+  <div class="info-card">
+    <h2>🎯 What We Cover</h2>
+    <p>• <strong>Pakistan News</strong> — Latest political, social, and economic developments<br>
+    • <strong>Sindh & Khairpur</strong> — Local news from Sindh and Khairpur district<br>
+    • <strong>World News</strong> — International affairs and global events<br>
+    • <strong>Sports</strong> — Cricket, PSL, football and all major sports<br>
+    • <strong>Business</strong> — Economy, markets, IMF, trade<br>
+    • <strong>Technology</strong> — Latest tech news and mobile launches</p>
+  </div>
+  <div class="info-card">
+    <h2>⚖️ Editorial Policy</h2>
+    <p>Chang Herald is committed to fair, balanced, and accurate reporting. We do not promote any political party or agenda. Our content is sourced from reputable international news agencies and verified local sources. We believe in the people's right to know the truth.</p>
+  </div>
+</div>
+<footer>
+  <div class="f-logo">CHANG <span>HERALD</span></div>
+  <p style="font-size:13px;margin-bottom:10px;">Founded by Asad Ali Chang | Khairpur Mirs, Sindh</p>
+  <div class="f-links">
+    <a href="/">Home</a><a href="/pakistan/">Pakistan</a><a href="/world/">World</a>
+    <a href="/sports/">Sports</a><a href="/about/">About</a><a href="/contact/">Contact</a>
+  </div>
+  <p style="font-size:11px;margin-top:10px;">© 2026 Chang Herald. All Rights Reserved.</p>
+</footer>
+<script>
+function toggleDark(){const h=document.documentElement;const d=h.getAttribute('data-theme')==='dark';h.setAttribute('data-theme',d?'light':'dark');document.getElementById('darkBtn').textContent=d?'🌙 Dark':'☀️ Light';localStorage.setItem('ch_theme',d?'light':'dark');}
+const t=localStorage.getItem('ch_theme');if(t){document.documentElement.setAttribute('data-theme',t);document.getElementById('darkBtn').textContent=t==='dark'?'☀️ Light':'🌙 Dark';}
+function tickClock(){const now=new Date();const pk=new Date(now.getTime()+(5*60*60*1000));let h=pk.getUTCHours();const m=pk.getUTCMinutes();const ap=h>=12?'PM':'AM';h=h%12||12;document.getElementById('liveTime').textContent=h+':'+String(m).padStart(2,'0')+' '+ap+' PKT';}
+setInterval(tickClock,1000);tickClock();
+</script>
+</body>
+</html>
