@@ -898,130 +898,126 @@ async function loadPrayerTimes(){
 loadPrayerTimes();
 setInterval(loadPrayerTimes, 60*60*1000);
 
-// ==================== LIVE PRICES (UPDATED JUNE 2026) ====================
-// Petrol: Rs 377.78/L (Official OGRA June 6, 2026)
-// Diesel: Rs 380.78/L (Official OGRA June 6, 2026)
-// Gold: ~Rs 467,762/tola (June 4, 2026) — fetched live
+
+// ==================== PRICES SYSTEM v3.0 (AUTO-UPDATE) ====================
+// June 20, 2026 — Latest OGRA rates
+// Petrol: Rs 299.81 | Diesel: Rs 311.78 (June 20, 2026 — PM announcement)
 
 const FUEL_PRICES = {
-  petrol: { price: 377.78, updated: 'June 6, 2026', change: -4, up: false },
-  diesel: { price: 380.78, updated: 'June 6, 2026', change: 0, up: null },
-  kerosene: { price: 280.70, updated: 'June 6, 2026', change: +8.70, up: true },
-  lpg: { price: 304.12, updated: 'March 31, 2026', change: 0, up: null }
+  petrol:   { price: 299.81, updated: 'June 20, 2026', change: -74.00 },
+  diesel:   { price: 311.78, updated: 'June 20, 2026', change: -69.00 },
+  hiOctane: { price: 420.00, updated: 'June 20, 2026', change: -25.00 },
+  kerosene: { price: 417.65, updated: 'June 20, 2026', change: -40.00 },
+  lpg:      { price: 303.81, updated: 'June 13, 2026', change: -0.31 },
+  nextReview: 'July 4, 2026'
 };
+
+let liveRates = {};
+let goldPKR = 467762;
 
 async function fetchLiveRates(){
   try{
+    const cached = JSON.parse(localStorage.getItem('ch_rates_v3') || 'null');
+    if(cached && Date.now() - cached.ts < 3600000){
+      liveRates = cached.rates; return true;
+    }
     const r = await fetch('https://open.er-api.com/v6/latest/USD');
     const d = await r.json();
     if(d.result === 'success'){
       const pkr = d.rates.PKR;
       liveRates = {
-        USD_PKR: pkr,
-        SAR_PKR: pkr / d.rates.SAR,
-        AED_PKR: pkr / d.rates.AED,
-        GBP_PKR: pkr / d.rates.GBP,
-        EUR_PKR: pkr / d.rates.EUR,
-        CNY_PKR: pkr / d.rates.CNY,
-        CAD_PKR: pkr / d.rates.CAD,
-        AUD_PKR: pkr / d.rates.AUD,
-        JPY_PKR: pkr / d.rates.JPY,
-        KWD_PKR: pkr / d.rates.KWD,
-        QAR_PKR: pkr / d.rates.QAR,
-        INR_PKR: pkr / d.rates.INR,
+        USD_PKR: pkr, SAR_PKR: pkr/d.rates.SAR, AED_PKR: pkr/d.rates.AED,
+        GBP_PKR: pkr/d.rates.GBP, EUR_PKR: pkr/d.rates.EUR,
+        CNY_PKR: pkr/d.rates.CNY, CAD_PKR: pkr/d.rates.CAD,
+        AUD_PKR: pkr/d.rates.AUD, KWD_PKR: pkr/d.rates.KWD,
+        QAR_PKR: pkr/d.rates.QAR, INR_PKR: pkr/d.rates.INR,
         lastUpdated: new Date().toLocaleTimeString('en-PK',{hour:'2-digit',minute:'2-digit'})
       };
-      localStorage.setItem('ch_rates', JSON.stringify({rates: liveRates, ts: Date.now()}));
+      localStorage.setItem('ch_rates_v3', JSON.stringify({rates: liveRates, ts: Date.now()}));
       return true;
     }
   }catch(e){ console.log('Rates error:', e.message); }
-  // Fallback to cached
-  const cached = localStorage.getItem('ch_rates');
-  if(cached){
-    try{ const c = JSON.parse(cached); liveRates = c.rates; return true; }catch{}
-  }
-  // Hardcoded fallback
-  liveRates = { USD_PKR: 278.50, SAR_PKR: 74.25, AED_PKR: 75.85, GBP_PKR: 352.00, EUR_PKR: 300.50, CNY_PKR: 38.50, CAD_PKR: 204.00, lastUpdated: 'Cached' };
+  const cached = localStorage.getItem('ch_rates_v3');
+  if(cached){ try{ liveRates = JSON.parse(cached).rates; return true; }catch{} }
+  liveRates = { USD_PKR:278.50, SAR_PKR:74.25, AED_PKR:75.85, GBP_PKR:352.00,
+                EUR_PKR:300.50, CNY_PKR:38.50, CAD_PKR:204.00,
+                KWD_PKR:907.00, QAR_PKR:76.50, INR_PKR:3.34,
+                lastUpdated:'Cached' };
   return false;
 }
 
 async function fetchLiveGold(){
   try{
-    // Try metals API for live gold price
+    const cached = JSON.parse(localStorage.getItem('ch_gold_v3') || 'null');
+    if(cached && Date.now() - cached.ts < 21600000){ goldPKR = cached.price; return; }
     const r = await fetch('https://api.metals.live/v1/spot/gold');
     const d = await r.json();
     if(d && d.price){
-      const goldUSD = d.price; // per troy oz
-      const usdPKR = liveRates.USD_PKR || 278.50;
-      // 1 tola = 11.6638 grams, 1 troy oz = 31.1035 grams
-      goldPKR = Math.round((goldUSD / 31.1035) * 11.6638 * usdPKR);
-      localStorage.setItem('ch_gold', JSON.stringify({price: goldPKR, ts: Date.now()}));
+      goldPKR = Math.round((d.price / 31.1035) * 11.6638 * (liveRates.USD_PKR || 278.50));
+      localStorage.setItem('ch_gold_v3', JSON.stringify({price: goldPKR, ts: Date.now()}));
       return;
     }
-  }catch(e){ console.log('Gold API error:', e.message); }
-  // Use cached if available
-  const cached = localStorage.getItem('ch_gold');
-  if(cached){
-    try{
-      const c = JSON.parse(cached);
-      if(Date.now() - c.ts < 24*60*60*1000){ goldPKR = c.price; return; }
-    }catch{}
-  }
-  goldPKR = 467762; // Updated June 2026 hardcoded fallback
-}
-
-async function refreshAllPrices(){
-  document.getElementById('pricesWidget').innerHTML = '<div class="spin"><div class="spinner"></div></div>';
-  await fetchLiveRates();
-  await fetchLiveGold();
-  buildPricesWidget();
-  miniConvert();
+  }catch(e){ console.log('Gold error:', e.message); }
+  const cached = localStorage.getItem('ch_gold_v3');
+  if(cached){ try{ goldPKR = JSON.parse(cached).price; }catch{} }
 }
 
 function buildPricesWidget(){
   const el = document.getElementById('pricesWidget');
+  if(!el) return;
   const usd = liveRates.USD_PKR || 278.50;
   const sar = liveRates.SAR_PKR || 74.25;
   const aed = liveRates.AED_PKR || 75.85;
   const gbp = liveRates.GBP_PKR || 352.00;
   const eur = liveRates.EUR_PKR || 300.50;
+  const upd = liveRates.lastUpdated || '--:--';
 
   el.innerHTML = `
-    <!-- CURRENCY SECTION -->
-    <div class="price-section-head">💱 Live Currency Rates <span class="price-live-badge">LIVE</span></div>
-    <div class="price-row"><span class="price-label">🇺🇸 USD / PKR</span><div class="price-val">${usd.toFixed(2)}<br><span class="price-change-up">▲ Live</span></div></div>
-    <div class="price-row"><span class="price-label">🇸🇦 SAR / PKR</span><div class="price-val">${sar.toFixed(2)}<br><span class="price-change-up">▲ Live</span></div></div>
-    <div class="price-row"><span class="price-label">🇦🇪 AED / PKR</span><div class="price-val">${aed.toFixed(2)}<br><span class="price-change-up">▲ Live</span></div></div>
-    <div class="price-row"><span class="price-label">🇬🇧 GBP / PKR</span><div class="price-val">${gbp.toFixed(2)}<br><span class="price-change-up">Live</span></div></div>
-    <div class="price-row"><span class="price-label">🇪🇺 EUR / PKR</span><div class="price-val">${eur.toFixed(2)}<br><span class="price-change-up">Live</span></div></div>
+    <div style="background:#c0392b;color:white;font-size:11px;font-weight:700;padding:6px 14px;letter-spacing:1px;display:flex;justify-content:space-between;align-items:center;">
+      <span>💱 LIVE CURRENCY RATES</span><span style="background:rgba(255,255,255,0.25);padding:1px 8px;border-radius:10px;font-size:9px;">AUTO</span>
+    </div>
+    <div class="price-row"><span class="price-label">🇺🇸 USD / PKR</span><div class="price-val">${usd.toFixed(2)}<br><span style="font-size:10px;color:#27ae60;">● Live</span></div></div>
+    <div class="price-row" style="background:var(--bg);"><span class="price-label">🇸🇦 SAR / PKR</span><div class="price-val">${sar.toFixed(2)}<br><span style="font-size:10px;color:#27ae60;">● Live</span></div></div>
+    <div class="price-row"><span class="price-label">🇦🇪 AED / PKR</span><div class="price-val">${aed.toFixed(2)}<br><span style="font-size:10px;color:#27ae60;">● Live</span></div></div>
+    <div class="price-row" style="background:var(--bg);"><span class="price-label">🇬🇧 GBP / PKR</span><div class="price-val">${gbp.toFixed(2)}<br><span style="font-size:10px;color:#27ae60;">● Live</span></div></div>
+    <div class="price-row"><span class="price-label">🇪🇺 EUR / PKR</span><div class="price-val">${eur.toFixed(2)}<br><span style="font-size:10px;color:#27ae60;">● Live</span></div></div>
+    <div style="padding:5px 14px 8px;font-size:10px;color:var(--gray);background:var(--bg);">🕐 Updated: ${upd} | Har 1 ghante mein auto-refresh</div>
 
-    <!-- GOLD SECTION -->
-    <div class="price-section-head">🪙 Gold Rates (24K) <span class="price-live-badge">LIVE</span></div>
-    <div class="price-row"><span class="price-label">Gold per Tola (24K)</span><div class="price-val">Rs ${goldPKR.toLocaleString()}<br><span class="price-change-up">▲ Today</span></div></div>
-    <div class="price-row"><span class="price-label">Gold per Tola (22K)</span><div class="price-val">Rs ${Math.round(goldPKR * 0.9167).toLocaleString()}<br><span style="font-size:10px;color:var(--gray);">Calculated</span></div></div>
-    <div class="price-row"><span class="price-label">Gold per Tola (18K)</span><div class="price-val">Rs ${Math.round(goldPKR * 0.75).toLocaleString()}<br><span style="font-size:10px;color:var(--gray);">Calculated</span></div></div>
-    <div class="price-row"><span class="price-label">Gold per 10g (24K)</span><div class="price-val">Rs ${Math.round(goldPKR * 0.857).toLocaleString()}<br><span style="font-size:10px;color:var(--gray);">Approx</span></div></div>
+    <div style="background:#b06000;color:white;font-size:11px;font-weight:700;padding:6px 14px;letter-spacing:1px;display:flex;justify-content:space-between;align-items:center;">
+      <span>🪙 GOLD RATES (LIVE)</span><span style="background:rgba(255,255,255,0.25);padding:1px 8px;border-radius:10px;font-size:9px;">LIVE</span>
+    </div>
+    <div class="price-row"><span class="price-label">24K per Tola</span><div class="price-val">Rs ${goldPKR.toLocaleString()}<br><span style="font-size:10px;color:#27ae60;">● Live</span></div></div>
+    <div class="price-row" style="background:var(--bg);"><span class="price-label">22K per Tola</span><div class="price-val">Rs ${Math.round(goldPKR*0.9167).toLocaleString()}<br><span style="font-size:10px;color:var(--gray);">Calculated</span></div></div>
+    <div class="price-row"><span class="price-label">21K per Tola</span><div class="price-val">Rs ${Math.round(goldPKR*0.875).toLocaleString()}<br><span style="font-size:10px;color:var(--gray);">Calculated</span></div></div>
+    <div class="price-row" style="background:var(--bg);"><span class="price-label">18K per Tola</span><div class="price-val">Rs ${Math.round(goldPKR*0.75).toLocaleString()}<br><span style="font-size:10px;color:var(--gray);">Calculated</span></div></div>
+    <div class="price-row"><span class="price-label">10 Gram (24K)</span><div class="price-val">Rs ${Math.round(goldPKR*0.857).toLocaleString()}<br><span style="font-size:10px;color:var(--gray);">Calculated</span></div></div>
+    <div style="padding:5px 14px 8px;font-size:10px;color:var(--gray);background:var(--bg);">metals.live se live | Har 6 ghante refresh</div>
 
-    <!-- FUEL SECTION -->
-    <div class="price-section-head">⛽ Fuel Prices <span class="price-static-badge">WEEKLY</span></div>
-    <div class="price-row"><span class="price-label">Petrol (MS)</span><div class="price-val">Rs ${FUEL_PRICES.petrol.price}/L<br><span class="price-change-down">▼ -${Math.abs(FUEL_PRICES.petrol.change)} June 6</span></div></div>
-    <div class="price-row"><span class="price-label">HSD Diesel</span><div class="price-val">Rs ${FUEL_PRICES.diesel.price}/L<br><span style="font-size:10px;color:var(--gray);">Unchanged June 6</span></div></div>
-    <div class="price-row"><span class="price-label">Kerosene Oil</span><div class="price-val">Rs ${FUEL_PRICES.kerosene.price}/L<br><span class="price-change-up">▲ +${FUEL_PRICES.kerosene.change}</span></div></div>
-    <div class="price-row"><span class="price-label">LPG</span><div class="price-val">Rs ${FUEL_PRICES.lpg.price}/kg<br><span style="font-size:10px;color:var(--gray);">Mar 2026</span></div></div>
-    <div style="padding:8px 14px;background:rgba(255,165,0,0.1);border-top:1px solid var(--border);">
-      <div style="font-size:10px;color:#b06000;font-weight:600;">⚠️ Fuel prices update weekly (every Friday)</div>
-      <a href="https://www.ogra.org.pk" target="_blank" style="font-size:10px;color:var(--red);">Verify at OGRA.org.pk →</a>
+    <div style="background:#1a5c1a;color:white;font-size:11px;font-weight:700;padding:6px 14px;letter-spacing:1px;display:flex;justify-content:space-between;align-items:center;">
+      <span>⛽ FUEL PRICES — OGRA OFFICIAL</span><span style="background:rgba(255,255,255,0.25);padding:1px 8px;border-radius:10px;font-size:9px;">UPDATED</span>
+    </div>
+    <div class="price-row"><span class="price-label">⛽ Petrol (MS 92)</span><div class="price-val">Rs ${FUEL_PRICES.petrol.price}/L<br><span style="font-size:10px;color:#27ae60;">▼ Rs ${Math.abs(FUEL_PRICES.petrol.change)} kam</span></div></div>
+    <div class="price-row" style="background:var(--bg);"><span class="price-label">🛢️ Diesel (HSD)</span><div class="price-val">Rs ${FUEL_PRICES.diesel.price}/L<br><span style="font-size:10px;color:#27ae60;">▼ Rs ${Math.abs(FUEL_PRICES.diesel.change)} kam</span></div></div>
+    <div class="price-row"><span class="price-label">🔵 Hi-Octane (95)</span><div class="price-val">Rs ${FUEL_PRICES.hiOctane.price}/L<br><span style="font-size:10px;color:#27ae60;">▼ Kam hua</span></div></div>
+    <div class="price-row" style="background:var(--bg);"><span class="price-label">🕯️ Kerosene</span><div class="price-val">Rs ${FUEL_PRICES.kerosene.price}/L<br><span style="font-size:10px;color:#27ae60;">▼ Kam hua</span></div></div>
+    <div class="price-row"><span class="price-label">🔥 LPG</span><div class="price-val">Rs ${FUEL_PRICES.lpg.price}/kg<br><span style="font-size:10px;color:#27ae60;">● Current</span></div></div>
+    <div style="padding:10px 14px;background:rgba(27,94,32,0.06);border-top:1px solid var(--border);">
+      <div style="font-size:11px;font-weight:700;color:var(--text);margin-bottom:3px;">📅 OGRA: ${FUEL_PRICES.petrol.updated}</div>
+      <div style="font-size:10px;color:var(--gray);line-height:1.7;">Agle review: ~${FUEL_PRICES.nextReview} | OGRA har 15 din mein update karta hai</div>
+      <div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap;">
+        <a href="https://www.ogra.org.pk" target="_blank" style="font-size:10px;color:white;background:#c0392b;padding:3px 10px;border-radius:10px;text-decoration:none;font-weight:700;">OGRA Verify →</a>
+        <button onclick="refreshAllPrices()" style="font-size:10px;color:var(--text);background:var(--bg);border:1px solid var(--border);padding:3px 10px;border-radius:10px;cursor:pointer;font-weight:700;">🔄 Refresh</button>
+      </div>
     </div>`;
 
-  document.getElementById('pricesLastUpdated').textContent = '🕐 Rates updated: ' + (liveRates.lastUpdated || 'Just now');
+  const lu = document.getElementById('pricesLastUpdated');
+  if(lu) lu.innerHTML = `⛽ <b>Rs ${FUEL_PRICES.petrol.price}/L</b> | 🛢️ <b>Rs ${FUEL_PRICES.diesel.price}/L</b> | 💵 <b>Rs ${usd.toFixed(1)}</b> | 🕐 ${upd}`;
 }
 
-// MINI CONVERTER
 function miniConvert(){
   const amt = parseFloat(document.getElementById('miniAmt').value) || 0;
   const to = document.getElementById('miniTo').value;
-  const rate = liveRates['USD_PKR'] ? (1 / liveRates[to + '_PKR']) : null;
-  if(rate && liveRates[to + '_PKR']){
+  if(liveRates[to + '_PKR']){
     const result = (amt / liveRates[to + '_PKR']).toFixed(4);
     document.getElementById('miniResult').textContent = `${amt.toLocaleString()} PKR = ${result} ${to}`;
   } else {
@@ -1029,7 +1025,6 @@ function miniConvert(){
   }
 }
 
-// FULL CONVERTER (CURRENCY PAGE)
 function convertCurrency(){
   const amt = parseFloat(document.getElementById('currAmount').value) || 0;
   const pair = document.getElementById('currConvType').value;
@@ -1044,36 +1039,50 @@ function convertCurrency(){
 
 function buildRatesTable(){
   const currencies = [
-    {code:'USD',flag:'🇺🇸',name:'US Dollar'},
-    {code:'SAR',flag:'🇸🇦',name:'Saudi Riyal'},
-    {code:'AED',flag:'🇦🇪',name:'UAE Dirham'},
-    {code:'GBP',flag:'🇬🇧',name:'British Pound'},
-    {code:'EUR',flag:'🇪🇺',name:'Euro'},
-    {code:'CNY',flag:'🇨🇳',name:'Chinese Yuan'},
-    {code:'CAD',flag:'🇨🇦',name:'Canadian Dollar'},
-    {code:'AUD',flag:'🇦🇺',name:'Australian Dollar'},
-    {code:'KWD',flag:'🇰🇼',name:'Kuwaiti Dinar'},
-    {code:'QAR',flag:'🇶🇦',name:'Qatari Riyal'},
+    {code:'USD',flag:'🇺🇸',name:'US Dollar'},{code:'SAR',flag:'🇸🇦',name:'Saudi Riyal'},
+    {code:'AED',flag:'🇦🇪',name:'UAE Dirham'},{code:'GBP',flag:'🇬🇧',name:'British Pound'},
+    {code:'EUR',flag:'🇪🇺',name:'Euro'},{code:'CNY',flag:'🇨🇳',name:'Chinese Yuan'},
+    {code:'CAD',flag:'🇨🇦',name:'Canadian Dollar'},{code:'AUD',flag:'🇦🇺',name:'Australian Dollar'},
+    {code:'KWD',flag:'🇰🇼',name:'Kuwaiti Dinar'},{code:'QAR',flag:'🇶🇦',name:'Qatari Riyal'},
     {code:'INR',flag:'🇮🇳',name:'Indian Rupee'},
   ];
   const el = document.getElementById('fullRatesTable');
+  if(!el) return;
   el.innerHTML = `<div style="overflow-x:auto;"><table style="width:100%;border-collapse:collapse;font-size:13px;"><tr style="background:var(--red);color:white;"><th style="padding:10px;text-align:left;">Currency</th><th style="padding:10px;text-align:right;">1 Unit = PKR</th><th style="padding:10px;text-align:right;">1000 PKR =</th></tr>` +
   currencies.map((c,i) => {
     const r = liveRates[c.code + '_PKR'];
     return r ? `<tr style="border-bottom:1px solid var(--border);${i%2?'background:var(--bg)':''}"><td style="padding:10px;">${c.flag} ${c.name} (${c.code})</td><td style="padding:10px;text-align:right;font-weight:700;">Rs ${r.toFixed(2)}</td><td style="padding:10px;text-align:right;color:var(--red);">${(1000/r).toFixed(4)} ${c.code}</td></tr>` : '';
-  }).join('') + `</table></div><p style="font-size:11px;color:var(--gray);margin-top:10px;">⚠️ Live rates from open.er-api.com | Updated: ${liveRates.lastUpdated||'Just now'}</p>`;
+  }).join('') + `</table></div><p style="font-size:11px;color:var(--gray);margin-top:10px;">⚠️ Live rates | Updated: ${liveRates.lastUpdated||'Just now'}</p>`;
   convertCurrency();
 }
 
-// Init prices on load
-(async () => {
+async function loadPrices(){
+  const el = document.getElementById('pricesWidget');
+  if(el && !el.dataset.loaded){
+    el.innerHTML = '<div style="padding:20px;text-align:center;"><div class="spinner"></div><br><span style="font-size:12px;color:var(--gray);">Rates load ho rahi hain...</span></div>';
+  }
   await fetchLiveRates();
-  await fetchLiveGold();
+  await Promise.all([fetchLiveGold()]);
   buildPricesWidget();
-  miniConvert();
-})();
-// Refresh every hour
-setInterval(refreshAllPrices, 60*60*1000);
+  if(el) el.dataset.loaded = '1';
+}
+
+async function refreshAllPrices(){
+  localStorage.removeItem('ch_rates_v3');
+  localStorage.removeItem('ch_gold_v3');
+  const el = document.getElementById('pricesWidget');
+  if(el) delete el.dataset.loaded;
+  await loadPrices();
+}
+
+loadPrices();
+setInterval(loadPrices, 3600000);
+document.addEventListener('visibilitychange', ()=>{
+  if(!document.hidden){
+    const c = JSON.parse(localStorage.getItem('ch_rates_v3')||'null');
+    if(!c || Date.now()-c.ts > 1800000) loadPrices();
+  }
+});
 
 // ==================== QUOTES & HISTORY ====================
 const quotes = [
