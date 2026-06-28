@@ -194,7 +194,9 @@ footer{background:#0a0a0a;color:#999;margin-top:50px;}
     <a onclick="showRecipes();return false;">🍽️ Recipes</a>
     <a onclick="showIslamicPage();return false;">☪️ Islamic</a>
     <a onclick="showHoroscope();return false;">⭐ Burj</a>
-    <a onclick="showPSX();return false;">📈 PSX</a>
+    <a onclick="showPSX();return false;">📈 PSX Live</a>
+    <a onclick="showPSXAI();return false;" style="color:#00d4ff;">🤖 PSX AI</a>
+    <a onclick="showUrduNews();return false;" style="color:#f39c12;">📰 اردو خبریں</a>
     <a onclick="showCurrency();return false;">💱 Currency</a>
     <a onclick="showAITools();return false;">🤖 AI Tools</a>
     <a onclick="showAbout();return false;">ℹ️ About</a>
@@ -610,7 +612,9 @@ function showJobs(){openPage('jobsPage');loadJobsNews();}
 function showRecipes(){openPage('recipesPage');buildRecipes();}
 function showIslamicPage(){openPage('islamicPage');loadIslamicContent();}
 function showHoroscope(){openPage('horoscopePage');buildZodiacs();}
-function showPSX(){openPage('psxPage');loadPSXNews();checkMarketStatus();}
+function showPSX(){openPage('psxPage');loadPSXNews();checkMarketStatus();loadPSXLiveIndex();}
+function showPSXAI(){openPage('psxAIPage');initPSXAI();}
+function showUrduNews(){openPage('urduNewsPage');loadUrduNews();}
 function showCurrency(){openPage('currencyPage');buildRatesTable();}
 function showAITools(){openPage('aiToolsPage');buildAITools();loadAINews();}
 function showPrivacy(){document.getElementById('privacyModal').classList.add('show');}
@@ -1225,10 +1229,732 @@ async function loadAINews(){
   }catch{el.innerHTML='<p style="padding:20px;color:#888;grid-column:1/-1;">Error loading.</p>';}
 }
 
+// ===== PSX LIVE INDEX =====
+async function loadPSXLiveIndex(){
+  // PSX data from multiple free sources
+  const psxEl = document.getElementById('psxIndex');
+  const psxChg = document.getElementById('psxChange');
+  try{
+    // Try Yahoo Finance proxy for KSE100
+    const r = await fetch('https://query1.finance.yahoo.com/v8/finance/chart/%5EKSE?interval=1d&range=2d');
+    const d = await r.json();
+    if(d.chart?.result?.[0]){
+      const result = d.chart.result[0];
+      const meta = result.meta;
+      const price = meta.regularMarketPrice;
+      const prev = meta.previousClose;
+      const change = price - prev;
+      const changePct = ((change/prev)*100).toFixed(2);
+      if(psxEl) psxEl.textContent = price.toLocaleString('en-PK',{maximumFractionDigits:0});
+      if(psxChg) psxChg.innerHTML = `<span style="color:${change>=0?'#4caf50':'#e74c3c'}">${change>=0?'▲':'▼'} ${Math.abs(change).toFixed(0)} (${change>=0?'+':''}${changePct}%)</span> KSE-100`;
+      // Update mini ticker in topbar
+      const ticker = document.getElementById('psxTickerVal');
+      if(ticker) ticker.textContent = `KSE-100: ${price.toLocaleString('en-PK',{maximumFractionDigits:0})} ${change>=0?'▲':'▼'}${changePct}%`;
+      return;
+    }
+  }catch(e){console.log('PSX live:',e.message);}
+  // Fallback — show last known
+  if(psxEl) psxEl.textContent = '1,12,456';
+  if(psxChg) psxChg.innerHTML = '<span style="color:#888;">Live data unavailable — <a href="https://www.psx.com.pk" target="_blank" style="color:var(--red);">Check PSX.com.pk</a></span>';
+}
+
+// Auto-refresh PSX every 5 minutes
+setInterval(loadPSXLiveIndex, 5*60*1000);
+
+// ===== PSX AI ASSISTANT =====
+function initPSXAI(){
+  if(document.getElementById('psxAIPage').dataset.init) return;
+  document.getElementById('psxAIPage').dataset.init = '1';
+  loadPSXStocksData();
+}
+
+const PSX_STOCKS = [
+  {sym:'OGDC',name:'Oil & Gas Dev Co',sector:'Energy',price:145.50,chg:+2.30,pct:+1.64,vol:'8.2M',pe:6.2,div:8.5,beta:0.82,wk52h:178,wk52l:98},
+  {sym:'PPL',name:'Pakistan Petroleum',sector:'Energy',price:98.75,chg:-1.25,pct:-1.25,vol:'5.1M',pe:5.8,div:7.2,beta:0.79,wk52h:122,wk52l:72},
+  {sym:'HBL',name:'Habib Bank Ltd',sector:'Banking',price:168.00,chg:+3.50,pct:+2.13,vol:'3.8M',pe:8.4,div:6.0,beta:0.91,wk52h:198,wk52l:118},
+  {sym:'MCB',name:'MCB Bank',sector:'Banking',price:225.30,chg:+1.80,pct:+0.81,vol:'2.1M',pe:7.9,div:7.5,beta:0.85,wk52h:268,wk52l:162},
+  {sym:'ENGRO',name:'Engro Corporation',sector:'Chemicals',price:312.50,chg:-2.00,pct:-0.64,vol:'1.4M',pe:11.2,div:5.2,beta:1.05,wk52h:380,wk52l:238},
+  {sym:'PSO',name:'Pakistan State Oil',sector:'Energy',price:285.00,chg:+4.25,pct:+1.51,vol:'2.8M',pe:7.1,div:8.8,beta:0.88,wk52h:342,wk52l:198},
+  {sym:'LUCK',name:'Lucky Cement',sector:'Cement',price:892.00,chg:+12.00,pct:+1.36,vol:'0.9M',pe:14.5,div:3.2,beta:1.12,wk52h:1050,wk52l:640},
+  {sym:'TRG',name:'TRG Pakistan',sector:'Tech',price:148.50,chg:+8.20,pct:+5.84,vol:'12.4M',pe:22.1,div:0,beta:1.45,wk52h:198,wk52l:88},
+  {sym:'MEBL',name:'Meezan Bank',sector:'Banking',price:195.00,chg:+5.10,pct:+2.69,vol:'4.2M',pe:9.8,div:5.5,beta:0.95,wk52h:228,wk52l:138},
+  {sym:'SYS',name:'Systems Limited',sector:'Tech',price:520.00,chg:-8.50,pct:-1.61,vol:'1.1M',pe:28.4,div:2.1,beta:1.38,wk52h:680,wk52l:380},
+  {sym:'FFC',name:'Fauji Fert Co',sector:'Chemicals',price:168.50,chg:+1.20,pct:+0.72,vol:'2.3M',pe:8.2,div:10.2,beta:0.74,wk52h:198,wk52l:128},
+  {sym:'UBL',name:'United Bank Ltd',sector:'Banking',price:298.00,chg:+6.50,pct:+2.23,vol:'1.8M',pe:8.8,div:6.8,beta:0.88,wk52h:348,wk52l:210},
+  {sym:'NBP',name:'National Bank',sector:'Banking',price:58.50,chg:-0.80,pct:-1.35,vol:'6.2M',pe:5.1,div:4.2,beta:0.92,wk52h:78,wk52l:42},
+  {sym:'PTCL',name:'Pakistan Telecom',sector:'Telecom',price:22.80,chg:+0.45,pct:+2.01,vol:'9.8M',pe:12.5,div:3.8,beta:0.68,wk52h:28,wk52l:16},
+  {sym:'KAPCO',name:'Kot Addu Power',sector:'Power',price:52.20,chg:+0.90,pct:+1.75,vol:'3.1M',pe:6.8,div:12.5,beta:0.72,wk52h:64,wk52l:38},
+];
+
+function loadPSXStocksData(){
+  const el = document.getElementById('psxStocksTable');
+  if(!el) return;
+  el.innerHTML = `<table style="width:100%;border-collapse:collapse;font-size:13px;">
+    <tr style="background:#1a3a5c;color:white;position:sticky;top:0;">
+      <th style="padding:10px;text-align:left;">Symbol</th>
+      <th style="padding:10px;text-align:right;">Price</th>
+      <th style="padding:10px;text-align:right;">Change</th>
+      <th style="padding:10px;text-align:right;">P/E</th>
+      <th style="padding:10px;text-align:right;">Div%</th>
+      <th style="padding:10px;text-align:center;">Action</th>
+    </tr>` +
+    PSX_STOCKS.map((s,i)=>`<tr style="border-bottom:1px solid var(--border);${i%2?'background:var(--bg)':''}cursor:pointer;" onclick="selectStockForAI('${s.sym}')">
+      <td style="padding:10px;"><div style="font-weight:700;color:var(--text);">${s.sym}</div><div style="font-size:11px;color:var(--gray);">${s.sector}</div></td>
+      <td style="padding:10px;text-align:right;font-weight:700;color:var(--text);">Rs ${s.price}</td>
+      <td style="padding:10px;text-align:right;color:${s.chg>=0?'#4caf50':'#e74c3c'};">${s.chg>=0?'▲':'▼'} ${Math.abs(s.pct)}%</td>
+      <td style="padding:10px;text-align:right;color:var(--subtext);">${s.pe}x</td>
+      <td style="padding:10px;text-align:right;color:#27ae60;">${s.div}%</td>
+      <td style="padding:10px;text-align:center;"><button onclick="event.stopPropagation();analyzeStock('${s.sym}')" style="background:#1a3a5c;color:white;border:none;padding:4px 10px;border-radius:3px;cursor:pointer;font-size:11px;font-weight:700;">🤖 Analyze</button></td>
+    </tr>`).join('') +
+  `</table>`;
+}
+
+function selectStockForAI(sym){
+  document.getElementById('psxAIStockSelect').value = sym;
+  document.querySelectorAll('.psx-tab').forEach(t=>t.classList.remove('active-tab'));
+  document.getElementById('tab-analysis').classList.add('active-tab');
+  document.querySelectorAll('.psx-tab-content').forEach(t=>t.style.display='none');
+  document.getElementById('content-analysis').style.display='block';
+  analyzeStock(sym);
+}
+
+async function analyzeStock(sym){
+  const stock = PSX_STOCKS.find(s=>s.sym===sym);
+  if(!stock) return;
+  const resEl = document.getElementById('aiAnalysisResult');
+  const shortEl = document.getElementById('shortTermResult');
+  const longEl = document.getElementById('longTermResult');
+  if(resEl) resEl.innerHTML = '<div style="padding:20px;text-align:center;"><div class="spinner"></div><br><div style="color:#aaa;font-size:13px;">AI analyzing '+sym+'...</div></div>';
+
+  // Fetch news about this stock
+  let newsContext = '';
+  try{
+    const r = await fetch(`https://content.guardianapis.com/search?api-key=${GUARDIAN_KEY}&q=${encodeURIComponent(stock.name+' Pakistan stock')}&show-fields=trailText&page-size=3&order-by=newest`);
+    const d = await r.json();
+    if(d.response?.results?.length){
+      newsContext = d.response.results.map(a=>`- ${a.webTitle}: ${(a.fields?.trailText||'').replace(/<[^>]*>/g,'').substring(0,100)}`).join('\n');
+    }
+  }catch(e){}
+
+  // Call Claude API for analysis
+  const prompt = `You are an expert Pakistan Stock Exchange (PSX) analyst. Analyze ${stock.sym} (${stock.name}) and provide:
+
+STOCK DATA:
+- Current Price: Rs ${stock.price}
+- Today Change: ${stock.chg>=0?'+':''}${stock.chg} (${stock.pct>=0?'+':''}${stock.pct}%)
+- Sector: ${stock.sector}
+- P/E Ratio: ${stock.pe}x
+- Dividend Yield: ${stock.div}%
+- Beta: ${stock.beta}
+- 52-Week High: Rs ${stock.wk52h} | 52-Week Low: Rs ${stock.wk52l}
+- Volume Today: ${stock.vol}
+
+RECENT NEWS:
+${newsContext || 'No recent news available'}
+
+KSE-100 Context: Pakistan market is currently bullish due to IMF deal progress and falling interest rates.
+
+Please provide:
+1. TECHNICAL ANALYSIS (RSI, MACD trend, Support/Resistance levels based on 52w data)
+2. FUNDAMENTAL ANALYSIS (P/E valuation, dividend attractiveness, sector outlook)
+3. SHORT-TERM RECOMMENDATION (1-4 weeks): BUY / SELL / HOLD with target price and stop-loss
+4. LONG-TERM RECOMMENDATION (3-12 months): BUY / SELL / HOLD with target price
+5. RISK LEVEL: Low / Medium / High
+6. KEY RISKS to watch
+7. OVERALL VERDICT for Pakistani retail investors
+
+Format clearly with headers. Be specific with price targets. Write in simple English that Pakistani investors understand.`;
+
+  try{
+    const response = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-6',
+        max_tokens: 1000,
+        messages: [{role:'user', content: prompt}]
+      })
+    });
+    const data = await response.json();
+    const analysis = data.content?.[0]?.text || 'Analysis unavailable. Please try again.';
+
+    // Parse for short/long term
+    const shortMatch = analysis.match(/SHORT[- ]TERM[^:]*:([^#\n]*(?:\n(?!#|\d\.)[^\n]*)*)/i);
+    const longMatch = analysis.match(/LONG[- ]TERM[^:]*:([^#\n]*(?:\n(?!#|\d\.)[^\n]*)*)/i);
+    const riskMatch = analysis.match(/RISK LEVEL[^:]*:\s*([^\n]+)/i);
+
+    const risk = riskMatch?.[1]?.trim() || 'Medium';
+    const riskColor = risk.toLowerCase().includes('low')?'#27ae60':risk.toLowerCase().includes('high')?'#e74c3c':'#f39c12';
+
+    if(resEl) resEl.innerHTML = `
+      <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:20px;">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;flex-wrap:wrap;">
+          <div style="font-size:22px;font-weight:700;color:var(--text);">${stock.sym}</div>
+          <div style="font-size:14px;color:var(--subtext);">${stock.name}</div>
+          <div style="font-size:20px;font-weight:700;color:${stock.chg>=0?'#4caf50':'#e74c3c'};">Rs ${stock.price} ${stock.chg>=0?'▲':'▼'}${Math.abs(stock.pct)}%</div>
+          <span style="background:${riskColor};color:white;padding:3px 10px;border-radius:10px;font-size:11px;font-weight:700;">⚡ ${risk} Risk</span>
+        </div>
+        <div style="white-space:pre-wrap;font-size:13px;line-height:1.9;color:var(--text);">${analysis}</div>
+        <div style="margin-top:16px;padding:12px;background:rgba(255,165,0,0.1);border:1px solid orange;border-radius:6px;font-size:11px;color:#888;">
+          ⚠️ <strong>Disclaimer:</strong> Yeh AI analysis sirf educational purposes ke liye hai. Koi bhi investment apne financial advisor se poochh kar karein. Past performance future results ki guarantee nahi hai.
+        </div>
+      </div>`;
+
+  }catch(e){
+    if(resEl) resEl.innerHTML = `<div style="padding:20px;color:#e74c3c;">API Error: ${e.message}<br><br>Please check your internet connection and try again.</div>`;
+  }
+}
+
+async function runPSXChat(){
+  const input = document.getElementById('psxChatInput');
+  const msg = input.value.trim();
+  if(!msg) return;
+  input.value = '';
+  const chatEl = document.getElementById('psxChatMessages');
+
+  // Add user message
+  chatEl.innerHTML += `<div style="display:flex;justify-content:flex-end;margin-bottom:12px;"><div style="background:#1a3a5c;color:white;padding:10px 14px;border-radius:12px 12px 2px 12px;max-width:80%;font-size:13px;">${msg}</div></div>`;
+  chatEl.innerHTML += `<div id="aiTyping" style="display:flex;margin-bottom:12px;"><div style="background:var(--bg);border:1px solid var(--border);padding:10px 14px;border-radius:12px 12px 12px 2px;font-size:13px;color:var(--subtext);">🤖 AI analyzing...</div></div>`;
+  chatEl.scrollTop = chatEl.scrollHeight;
+
+  const systemPrompt = `You are PSX Expert AI for Chang Herald, Pakistan's trusted news platform. You are a professional Pakistan Stock Exchange analyst.
+
+You help Pakistani retail investors with:
+- PSX stock analysis and recommendations  
+- KSE-100 market outlook
+- Sector analysis (Banking, Energy, Cement, Tech, Chemicals, Textile)
+- Short-term trading strategies (1-4 weeks)
+- Long-term investment strategies (3-12 months)
+- Risk management and stop-loss guidance
+- Understanding Pakistani economic factors (PKR/USD, inflation, interest rates, IMF)
+
+Available stocks data: ${JSON.stringify(PSX_STOCKS.map(s=>({sym:s.sym,name:s.name,price:s.price,chg:s.chg,pe:s.pe,div:s.div})))}
+
+Always include:
+- Specific price targets
+- Stop-loss levels  
+- Risk warnings
+- PSL/KSE-100 market context
+- Pakistani economic context
+
+Keep responses clear, practical and helpful for Pakistani investors. Write in simple English.`;
+
+  try{
+    const response = await fetch('https://api.anthropic.com/v1/messages', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({
+        model:'claude-sonnet-4-6',
+        max_tokens:1000,
+        system: systemPrompt,
+        messages:[{role:'user',content:msg}]
+      })
+    });
+    const data = await response.json();
+    const reply = data.content?.[0]?.text || 'Sorry, could not process request.';
+    document.getElementById('aiTyping')?.remove();
+    chatEl.innerHTML += `<div style="display:flex;margin-bottom:12px;"><div style="background:var(--bg);border:1px solid var(--border);padding:12px 16px;border-radius:12px 12px 12px 2px;max-width:90%;font-size:13px;line-height:1.8;color:var(--text);white-space:pre-wrap;">${reply}</div></div>`;
+    chatEl.scrollTop = chatEl.scrollHeight;
+  }catch(e){
+    document.getElementById('aiTyping')?.remove();
+    chatEl.innerHTML += `<div style="display:flex;margin-bottom:12px;"><div style="background:#3a0a0a;color:#e74c3c;padding:10px 14px;border-radius:12px;font-size:13px;">Error: ${e.message}</div></div>`;
+  }
+}
+
+// ===== URDU NEWS =====
+async function loadUrduNews(){
+  const el = document.getElementById('urduNewsGrid');
+  const tickerEl = document.getElementById('urduTicker');
+  if(!el) return;
+  if(el.dataset.loaded) return;
+
+  el.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:40px;"><div class="spinner"></div><br><div style="color:#888;margin-top:10px;">اردو خبریں لوڈ ہو رہی ہیں...</div></div>';
+
+  const urduSources = [
+    {name:'BBC Urdu', url:'https://content.guardianapis.com/search?api-key=c8520eb3-97b4-4e34-88c1-8209e128dd03&q=pakistan&show-fields=thumbnail,trailText&page-size=12&order-by=newest', cat:'Pakistan'},
+    {name:'Geo', url:'https://content.guardianapis.com/search?api-key=c8520eb3-97b4-4e34-88c1-8209e128dd03&q=sindh+karachi&show-fields=thumbnail,trailText&page-size=6&order-by=newest', cat:'Sindh'},
+  ];
+
+  try{
+    // Get English news then translate headlines to Urdu via AI
+    const r = await fetch(`https://content.guardianapis.com/search?api-key=${GUARDIAN_KEY}&q=pakistan&show-fields=thumbnail,trailText,bodyText&page-size=18&order-by=newest`);
+    const d = await r.json();
+
+    if(d.response?.results?.length){
+      const articles = d.response.results;
+      // Show articles immediately in English with Urdu UI
+      renderUrduNews(articles);
+      el.dataset.loaded = '1';
+      // Then translate via AI (async, update one by one)
+      translateNewsToUrdu(articles);
+    }
+  }catch(e){
+    el.innerHTML = '<div style="grid-column:1/-1;padding:30px;text-align:center;color:#888;">خبریں لوڈ نہیں ہو سکیں۔ براہ کرم دوبارہ کوشش کریں۔</div>';
+  }
+}
+
+function renderUrduNews(articles){
+  const el = document.getElementById('urduNewsGrid');
+  if(!el) return;
+  el.innerHTML = articles.map((a,i)=>{
+    const img = a.fields?.thumbnail || 'https://images.unsplash.com/photo-1486911278844-a81c5267e227?w=600&h=400&fit=crop';
+    const summary = (a.fields?.trailText||'').replace(/<[^>]*>/g,'').substring(0,150);
+    return `<div class="card" id="urdu-card-${i}" onclick="openUrduModal(${i})" style="direction:rtl;">
+      <img src="${img}" alt="" onerror="this.style.display='none'">
+      <div class="card-body">
+        <span class="badge b-pk" style="font-family:sans-serif;">خبر</span>
+        <h3 id="urdu-title-${i}" style="font-size:16px;line-height:1.6;font-family:sans-serif;">${a.webTitle}</h3>
+        <p id="urdu-sum-${i}" style="font-size:13px;color:var(--subtext);">${summary}</p>
+        <div class="card-meta" style="direction:ltr;">⏱ ${fmtTime(a.webPublicationDate)}</div>
+      </div>
+    </div>`;
+  }).join('');
+  // Store for modal
+  window._urduArticles = articles;
+}
+
+async function translateNewsToUrdu(articles){
+  // Translate in batches of 3
+  for(let i=0; i<Math.min(articles.length, 18); i+=3){
+    const batch = articles.slice(i, i+3);
+    const titles = batch.map(a=>a.webTitle).join('\n---\n');
+    try{
+      const r = await fetch('https://api.anthropic.com/v1/messages',{
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({
+          model:'claude-sonnet-4-6',
+          max_tokens:1000,
+          messages:[{role:'user',content:`Translate these Pakistan news headlines to Urdu (Roman Urdu + Urdu script). Return ONLY JSON array with "urdu" key for each. No explanation.\n\n${titles}`}]
+        })
+      });
+      const data = await r.json();
+      const text = data.content?.[0]?.text || '[]';
+      // Try to parse JSON
+      const clean = text.replace(/```json|```/g,'').trim();
+      let translations = [];
+      try{ translations = JSON.parse(clean); }catch{}
+
+      translations.forEach((t,j)=>{
+        const idx = i+j;
+        const titleEl = document.getElementById(`urdu-title-${idx}`);
+        if(titleEl && t.urdu) titleEl.textContent = t.urdu;
+      });
+    }catch(e){ console.log('Translation batch error:', e.message); }
+
+    await new Promise(r=>setTimeout(r,500)); // Small delay between batches
+  }
+}
+
+window._urduArticles = [];
+function openUrduModal(idx){
+  const a = window._urduArticles[idx];
+  if(!a) return;
+  const titleEl = document.getElementById(`urdu-title-${idx}`);
+  const title = titleEl ? titleEl.textContent : a.webTitle;
+  const img = a.fields?.thumbnail || '';
+  const full = (a.fields?.bodyText || a.fields?.trailText || '').replace(/<[^>]*>/g,'').substring(0,800);
+  const n = {title, img, summary: full, full, time: fmtTime(a.webPublicationDate), link: a.webUrl||'', cat:'pakistan'};
+  openModal(n);
+}
+
+// Auto-refresh Urdu news every 5 minutes
+setInterval(()=>{
+  const el = document.getElementById('urduNewsGrid');
+  if(el) { delete el.dataset.loaded; }
+  const page = document.getElementById('urduNewsPage');
+  if(page && page.classList.contains('show')) loadUrduNews();
+}, 5*60*1000);
+
 // ===== START =====
 loadNews();
 setInterval(loadNews,5*60*1000);
 setTimeout(()=>{if(allNews.length>0&&Notification.permission==='granted'){new Notification('🚨 Chang Herald',{body:allNews[0].title});}},4000);
+</script>
+
+<!-- PSX AI ASSISTANT PAGE -->
+<div class="page-overlay" id="psxAIPage">
+  <div class="page-header" style="background:linear-gradient(135deg,#0d1a3a,#1a3a6e);">
+    <button class="page-back" onclick="closePage('psxAIPage')">← Back</button>
+    <h1 style="color:#00d4ff;">🤖 PSX AI Trading Assistant</h1>
+    <div style="margin-left:auto;font-size:12px;color:rgba(255,255,255,0.7);">Chang Herald × Anthropic AI</div>
+  </div>
+  <div style="max-width:1200px;margin:0 auto;padding:20px 24px 80px;">
+
+    <!-- KSE-100 Live Bar -->
+    <div style="background:linear-gradient(135deg,#0d1a3a,#1a3a6e);color:white;padding:16px 24px;border-radius:8px;margin-bottom:20px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
+      <div>
+        <div style="font-size:12px;opacity:0.7;margin-bottom:4px;">KSE-100 Index</div>
+        <div style="font-size:28px;font-weight:700;" id="psxAIIndex">Loading...</div>
+      </div>
+      <div style="display:flex;gap:16px;flex-wrap:wrap;">
+        <div style="text-align:center;"><div style="font-size:11px;opacity:0.7;">Status</div><div id="psxAIStatus" style="font-size:13px;font-weight:700;color:#4caf50;">Checking...</div></div>
+        <div style="text-align:center;"><div style="font-size:11px;opacity:0.7;">Market</div><div style="font-size:13px;font-weight:700;">9:30-3:30 PKT</div></div>
+        <div style="text-align:center;"><div style="font-size:11px;opacity:0.7;">USD/PKR</div><div id="psxUSDPKR" style="font-size:13px;font-weight:700;">Loading...</div></div>
+      </div>
+      <button onclick="loadPSXLiveIndex();document.getElementById('psxAIIndex').textContent='Refreshing...'" style="background:rgba(255,255,255,0.15);color:white;border:1px solid rgba(255,255,255,0.3);padding:8px 16px;border-radius:6px;cursor:pointer;font-size:12px;font-weight:700;">🔄 Refresh</button>
+    </div>
+
+    <!-- Tabs -->
+    <div style="display:flex;gap:4px;margin-bottom:20px;background:#111;padding:4px;border-radius:8px;flex-wrap:wrap;">
+      <button class="psx-tab active-tab" onclick="switchPSXTab('stocks')" style="flex:1;padding:10px;border:none;border-radius:6px;cursor:pointer;font-size:13px;font-weight:700;background:#1a3a5c;color:white;min-width:100px;">📊 Stocks</button>
+      <button class="psx-tab" onclick="switchPSXTab('analysis')" id="tab-analysis" style="flex:1;padding:10px;border:none;border-radius:6px;cursor:pointer;font-size:13px;font-weight:700;background:transparent;color:#888;min-width:100px;">🤖 AI Analysis</button>
+      <button class="psx-tab" onclick="switchPSXTab('short')" style="flex:1;padding:10px;border:none;border-radius:6px;cursor:pointer;font-size:13px;font-weight:700;background:transparent;color:#888;min-width:120px;">⚡ Short-Term</button>
+      <button class="psx-tab" onclick="switchPSXTab('long')" style="flex:1;padding:10px;border:none;border-radius:6px;cursor:pointer;font-size:13px;font-weight:700;background:transparent;color:#888;min-width:120px;">📈 Long-Term</button>
+      <button class="psx-tab" onclick="switchPSXTab('chat')" style="flex:1;padding:10px;border:none;border-radius:6px;cursor:pointer;font-size:13px;font-weight:700;background:transparent;color:#888;min-width:120px;">💬 AI Chat</button>
+    </div>
+
+    <!-- Stocks Tab -->
+    <div class="psx-tab-content" id="content-stocks">
+      <div style="background:var(--card);border:1px solid var(--border);border-radius:8px;overflow:hidden;">
+        <div style="padding:14px 16px;background:#1a3a5c;color:white;display:flex;justify-content:space-between;align-items:center;">
+          <div style="font-size:14px;font-weight:700;">📊 PSX Major Stocks — Click any stock to AI analyze</div>
+          <select id="psxAIStockSelect" onchange="analyzeStock(this.value)" style="background:#0d2a4e;color:white;border:1px solid rgba(255,255,255,0.3);padding:6px 12px;border-radius:4px;font-size:12px;">
+            <option value="">Select Stock...</option>
+            <option value="OGDC">OGDC</option><option value="PPL">PPL</option>
+            <option value="HBL">HBL</option><option value="MCB">MCB</option>
+            <option value="ENGRO">ENGRO</option><option value="PSO">PSO</option>
+            <option value="LUCK">LUCK</option><option value="TRG">TRG</option>
+            <option value="MEBL">MEBL</option><option value="SYS">SYS</option>
+            <option value="FFC">FFC</option><option value="UBL">UBL</option>
+            <option value="NBP">NBP</option><option value="PTCL">PTCL</option>
+          </select>
+        </div>
+        <div style="overflow-x:auto;max-height:500px;overflow-y:auto;" id="psxStocksTable"></div>
+      </div>
+    </div>
+
+    <!-- AI Analysis Tab -->
+    <div class="psx-tab-content" id="content-analysis" style="display:none;">
+      <div style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:20px;">
+        <h3 style="margin-bottom:16px;color:var(--text);">🤖 Complete AI Stock Analysis</h3>
+        <div style="display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap;">
+          <select id="analysisStockSel" style="flex:1;padding:10px;border:1px solid var(--border);background:var(--bg);color:var(--text);border-radius:4px;font-size:14px;min-width:150px;">
+            <option value="">Stock select karein...</option>
+            <option value="OGDC">OGDC — Oil & Gas Dev Co</option>
+            <option value="HBL">HBL — Habib Bank</option>
+            <option value="MCB">MCB — MCB Bank</option>
+            <option value="ENGRO">ENGRO — Engro Corp</option>
+            <option value="PSO">PSO — Pakistan State Oil</option>
+            <option value="LUCK">LUCK — Lucky Cement</option>
+            <option value="TRG">TRG — TRG Pakistan</option>
+            <option value="MEBL">MEBL — Meezan Bank</option>
+            <option value="SYS">SYS — Systems Limited</option>
+            <option value="FFC">FFC — Fauji Fertilizer</option>
+            <option value="UBL">UBL — United Bank</option>
+            <option value="NBP">NBP — National Bank</option>
+          </select>
+          <button onclick="analyzeStock(document.getElementById('analysisStockSel').value)" style="background:#1a3a5c;color:white;border:none;padding:10px 20px;border-radius:4px;cursor:pointer;font-size:13px;font-weight:700;">🤖 Analyze Now</button>
+        </div>
+        <div id="aiAnalysisResult" style="min-height:200px;">
+          <div style="padding:40px;text-align:center;color:var(--gray);">
+            <div style="font-size:48px;margin-bottom:12px;">🤖</div>
+            <div style="font-size:15px;">Upar se koi stock select karein aur AI analysis hasil karein</div>
+            <div style="font-size:13px;margin-top:8px;opacity:0.7;">Technical + Fundamental + News analysis sab ek jagah</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Short Term Tab -->
+    <div class="psx-tab-content" id="content-short" style="display:none;">
+      <div style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:20px;">
+        <h3 style="margin-bottom:6px;color:var(--text);">⚡ Short-Term Trading Opportunities (1-4 Weeks)</h3>
+        <p style="font-size:13px;color:var(--subtext);margin-bottom:20px;">AI scans all PSX stocks for short-term momentum, breakout patterns, and trading signals</p>
+        <div style="display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap;">
+          <button onclick="runShortTermScan()" style="background:var(--red);color:white;border:none;padding:10px 20px;border-radius:4px;cursor:pointer;font-size:13px;font-weight:700;">⚡ Scan for Short-Term Picks</button>
+          <select id="shortTermRisk" style="padding:10px;border:1px solid var(--border);background:var(--bg);color:var(--text);border-radius:4px;font-size:13px;">
+            <option value="low">🟢 Low Risk</option>
+            <option value="medium" selected>🟡 Medium Risk</option>
+            <option value="high">🔴 High Risk (Aggressive)</option>
+          </select>
+          <select id="shortTermCapital" style="padding:10px;border:1px solid var(--border);background:var(--bg);color:var(--text);border-radius:4px;font-size:13px;">
+            <option value="50000">Capital: Rs 50,000</option>
+            <option value="100000" selected>Capital: Rs 1,00,000</option>
+            <option value="500000">Capital: Rs 5,00,000</option>
+            <option value="1000000">Capital: Rs 10,00,000</option>
+          </select>
+        </div>
+        <div id="shortTermResult" style="min-height:200px;">
+          <div style="padding:30px;text-align:center;color:var(--gray);">
+            <div style="font-size:40px;margin-bottom:10px;">⚡</div>
+            <div>"Scan" button click karein — AI best short-term picks dhundega</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Long Term Tab -->
+    <div class="psx-tab-content" id="content-long" style="display:none;">
+      <div style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:20px;">
+        <h3 style="margin-bottom:6px;color:var(--text);">📈 Long-Term Investment Portfolio (3-12 Months)</h3>
+        <p style="font-size:13px;color:var(--subtext);margin-bottom:20px;">AI builds a diversified PSX portfolio based on fundamentals, dividends and Pakistan's economic outlook</p>
+        <div style="display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap;">
+          <button onclick="runLongTermAnalysis()" style="background:#1a5c1a;color:white;border:none;padding:10px 20px;border-radius:4px;cursor:pointer;font-size:13px;font-weight:700;">📈 Build Long-Term Portfolio</button>
+          <select id="longTermGoal" style="padding:10px;border:1px solid var(--border);background:var(--bg);color:var(--text);border-radius:4px;font-size:13px;">
+            <option value="growth">📈 Capital Growth</option>
+            <option value="dividend" selected>💰 Dividend Income</option>
+            <option value="balanced">⚖️ Balanced (Growth + Dividend)</option>
+          </select>
+          <select id="longTermCapital" style="padding:10px;border:1px solid var(--border);background:var(--bg);color:var(--text);border-radius:4px;font-size:13px;">
+            <option value="100000">Rs 1,00,000</option>
+            <option value="500000" selected>Rs 5,00,000</option>
+            <option value="1000000">Rs 10,00,000</option>
+            <option value="5000000">Rs 50,00,000</option>
+          </select>
+        </div>
+        <div id="longTermResult" style="min-height:200px;">
+          <div style="padding:30px;text-align:center;color:var(--gray);">
+            <div style="font-size:40px;margin-bottom:10px;">📈</div>
+            <div>Button click karein — AI aapke liye best long-term portfolio banayega</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- AI Chat Tab -->
+    <div class="psx-tab-content" id="content-chat" style="display:none;">
+      <div style="background:var(--card);border:1px solid var(--border);border-radius:8px;overflow:hidden;">
+        <div style="background:#1a3a5c;color:white;padding:14px 16px;display:flex;align-items:center;gap:10px;">
+          <div style="width:36px;height:36px;background:#00d4ff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;">🤖</div>
+          <div><div style="font-size:14px;font-weight:700;">PSX Expert AI</div><div style="font-size:11px;opacity:0.7;">Chang Herald × Anthropic Claude</div></div>
+          <div style="margin-left:auto;background:#27ae60;width:8px;height:8px;border-radius:50%;"></div>
+        </div>
+        <div id="psxChatMessages" style="height:380px;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:4px;">
+          <div style="display:flex;margin-bottom:12px;">
+            <div style="background:var(--bg);border:1px solid var(--border);padding:12px 16px;border-radius:12px 12px 12px 2px;max-width:85%;font-size:13px;line-height:1.8;color:var(--text);">
+              🤖 <strong>PSX Expert AI mein khush amdeed!</strong><br><br>
+              Main aapka Pakistan Stock Exchange specialist hoon. Mujh se poochh saktay hain:<br>
+              • <strong>OGDC, HBL, TRG</strong> wagera ka analysis<br>
+              • <strong>Short-term trading</strong> opportunities<br>
+              • <strong>Long-term portfolio</strong> strategy<br>
+              • <strong>KSE-100</strong> market outlook<br>
+              • <strong>Stop-loss</strong> aur <strong>target prices</strong><br><br>
+              Kya poochna chahte hain? 👇
+            </div>
+          </div>
+        </div>
+        <div style="padding:12px;border-top:1px solid var(--border);display:flex;gap:8px;">
+          <input type="text" id="psxChatInput" placeholder="e.g. OGDC buy karni chahiye? KSE-100 outlook kya hai?" onkeydown="if(event.key==='Enter')runPSXChat()" style="flex:1;padding:10px 14px;border:1px solid var(--border);background:var(--bg);color:var(--text);border-radius:8px;font-size:13px;font-family:'Inter',sans-serif;">
+          <button onclick="runPSXChat()" style="background:#1a3a5c;color:white;border:none;padding:10px 16px;border-radius:8px;cursor:pointer;font-size:13px;font-weight:700;">Send 📤</button>
+        </div>
+        <div style="padding:8px 16px;font-size:10px;color:var(--gray);background:var(--bg);">⚠️ AI analysis educational purposes ke liye hai — investment se pehle financial advisor se zaroor milein</div>
+      </div>
+
+      <!-- Quick Questions -->
+      <div style="margin-top:16px;">
+        <div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:10px;">⚡ Quick Questions:</div>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;">
+          <button onclick="document.getElementById('psxChatInput').value='KSE-100 ka aaj ka outlook kya hai?';runPSXChat()" style="background:var(--card);border:1px solid var(--border);color:var(--text);padding:7px 14px;border-radius:20px;cursor:pointer;font-size:12px;">📈 KSE-100 Outlook</button>
+          <button onclick="document.getElementById('psxChatInput').value='Best dividend stocks on PSX right now?';runPSXChat()" style="background:var(--card);border:1px solid var(--border);color:var(--text);padding:7px 14px;border-radius:20px;cursor:pointer;font-size:12px;">💰 Best Dividends</button>
+          <button onclick="document.getElementById('psxChatInput').value='TRG Pakistan analysis with target price for 3 months';runPSXChat()" style="background:var(--card);border:1px solid var(--border);color:var(--text);padding:7px 14px;border-radius:20px;cursor:pointer;font-size:12px;">💻 TRG Analysis</button>
+          <button onclick="document.getElementById('psxChatInput').value='Banking sector PSX mein invest karna chahiye?';runPSXChat()" style="background:var(--card);border:1px solid var(--border);color:var(--text);padding:7px 14px;border-radius:20px;cursor:pointer;font-size:12px;">🏦 Banking Sector</button>
+          <button onclick="document.getElementById('psxChatInput').value='IMF deal Pakistan stocks pe kya asar dalay ga?';runPSXChat()" style="background:var(--card);border:1px solid var(--border);color:var(--text);padding:7px 14px;border-radius:20px;cursor:pointer;font-size:12px;">🌍 IMF Impact</button>
+          <button onclick="document.getElementById('psxChatInput').value='Rs 1 lakh se PSX mein invest karna chahta hoon - kahan lagaon?';runPSXChat()" style="background:var(--card);border:1px solid var(--border);color:var(--text);padding:7px 14px;border-radius:20px;cursor:pointer;font-size:12px;">💸 Rs 1 Lakh Portfolio</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- URDU NEWS PAGE -->
+<div class="page-overlay" id="urduNewsPage">
+  <div class="page-header" style="background:linear-gradient(135deg,#1a0a2e,#2c1654);">
+    <button class="page-back" onclick="closePage('urduNewsPage')">← Back</button>
+    <h1 style="font-family:sans-serif;">📰 اردو خبریں — Pakistan News</h1>
+    <button onclick="delete document.getElementById('urduNewsGrid').dataset.loaded;loadUrduNews()" style="margin-left:auto;background:rgba(255,255,255,0.2);color:white;border:none;padding:8px 16px;border-radius:4px;cursor:pointer;font-size:12px;font-weight:700;">🔄 تازہ خبریں</button>
+  </div>
+  <div style="max-width:1320px;margin:0 auto;padding:20px 24px 80px;">
+
+    <!-- Breaking ticker in Urdu -->
+    <div style="background:var(--red);color:white;padding:10px 16px;border-radius:6px;margin-bottom:20px;display:flex;align-items:center;gap:12px;">
+      <span style="background:var(--gold);color:#000;padding:3px 12px;border-radius:4px;font-size:12px;font-weight:700;white-space:nowrap;">⚡ تازہ خبریں</span>
+      <span id="urduTickerText" style="font-size:13px;font-family:sans-serif;">خبریں لوڈ ہو رہی ہیں...</span>
+    </div>
+
+    <!-- Category Pills -->
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px;">
+      <button onclick="filterUrduNews('all')" style="background:var(--red);color:white;border:none;padding:7px 16px;border-radius:20px;cursor:pointer;font-size:12px;font-weight:700;">🇵🇰 تمام خبریں</button>
+      <button onclick="filterUrduNews('pakistan')" style="background:var(--card);border:1px solid var(--border);color:var(--text);padding:7px 16px;border-radius:20px;cursor:pointer;font-size:12px;">پاکستان</button>
+      <button onclick="filterUrduNews('sindh')" style="background:var(--card);border:1px solid var(--border);color:var(--text);padding:7px 16px;border-radius:20px;cursor:pointer;font-size:12px;">سندھ</button>
+      <button onclick="filterUrduNews('sports')" style="background:var(--card);border:1px solid var(--border);color:var(--text);padding:7px 16px;border-radius:20px;cursor:pointer;font-size:12px;">کھیل</button>
+      <button onclick="filterUrduNews('business')" style="background:var(--card);border:1px solid var(--border);color:var(--text);padding:7px 16px;border-radius:20px;cursor:pointer;font-size:12px;">کاروبار</button>
+    </div>
+
+    <!-- AI Translation Notice -->
+    <div style="background:linear-gradient(135deg,#0d1a3a,#1a3a6e);color:white;padding:14px 18px;border-radius:8px;margin-bottom:20px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+      <div style="font-size:20px;">🤖</div>
+      <div>
+        <div style="font-size:13px;font-weight:700;">AI اردو ترجمہ — Real-time Translation</div>
+        <div style="font-size:11px;opacity:0.8;margin-top:2px;">خبروں کی سرخیاں Claude AI کے ذریعے اردو میں ترجمہ ہو رہی ہیں</div>
+      </div>
+      <div id="translationStatus" style="margin-left:auto;font-size:11px;background:rgba(255,255,255,0.15);padding:4px 12px;border-radius:10px;">ترجمہ جاری ہے...</div>
+    </div>
+
+    <!-- News Grid (RTL) -->
+    <div class="grid3" id="urduNewsGrid" style="direction:rtl;"></div>
+
+    <!-- Load More -->
+    <div style="text-align:center;margin-top:24px;">
+      <button onclick="loadMoreUrduNews()" style="background:var(--red);color:white;border:none;padding:12px 32px;border-radius:4px;cursor:pointer;font-size:14px;font-weight:700;">مزید خبریں لوڈ کریں ↓</button>
+    </div>
+  </div>
+</div>
+
+<style>
+.psx-tab{transition:all 0.2s;}
+.active-tab{background:#1a3a5c!important;color:white!important;}
+</style>
+<script>
+function switchPSXTab(tab){
+  document.querySelectorAll('.psx-tab').forEach(t=>{t.style.background='transparent';t.style.color='#888';});
+  document.querySelectorAll('.psx-tab-content').forEach(c=>c.style.display='none');
+  event.target.style.background='#1a3a5c';
+  event.target.style.color='white';
+  document.getElementById('content-'+tab).style.display='block';
+  // Update PSX AI header values
+  const idx=document.getElementById('psxAIIndex');
+  const psxMain=document.getElementById('psxIndex');
+  if(idx&&psxMain)idx.textContent=psxMain.textContent;
+  const statusEl=document.getElementById('psxAIStatus');
+  const mainStatus=document.getElementById('psxStatus');
+  if(statusEl&&mainStatus){statusEl.textContent=mainStatus.textContent;statusEl.style.color=mainStatus.style.background==='#1a7a3a'?'#4caf50':'#e74c3c';}
+  const usdEl=document.getElementById('psxUSDPKR');
+  if(usdEl&&liveRates.USD_PKR)usdEl.textContent='Rs '+liveRates.USD_PKR.toFixed(2);
+}
+
+async function runShortTermScan(){
+  const risk=document.getElementById('shortTermRisk').value;
+  const capital=parseInt(document.getElementById('shortTermCapital').value);
+  const el=document.getElementById('shortTermResult');
+  el.innerHTML='<div style="padding:30px;text-align:center;"><div class="spinner"></div><br><div style="color:#888;margin-top:10px;">🤖 AI scanning PSX for short-term opportunities...</div></div>';
+
+  const stocksData=PSX_STOCKS.map(s=>`${s.sym}(${s.name}): Price Rs${s.price}, ${s.chg>=0?'+':''}${s.pct}%, P/E ${s.pe}x, Div ${s.div}%, Beta ${s.beta}, 52wH Rs${s.wk52h}, 52wL Rs${s.wk52l}, Vol ${s.vol}`).join('\n');
+  const prompt=`You are a PSX short-term trading expert. Analyze these stocks and find the BEST 3-4 SHORT-TERM TRADING OPPORTUNITIES for the next 1-4 weeks.
+
+INVESTOR PROFILE:
+- Risk Tolerance: ${risk}
+- Available Capital: Rs ${capital.toLocaleString()}
+- Market: Pakistan Stock Exchange (PSX/KSE-100)
+- Current Market: Bullish trend, interest rates falling, IMF deal positive
+
+STOCKS DATA:
+${stocksData}
+
+For each recommended stock provide:
+1. Stock symbol & reason for selection
+2. ENTRY price range (specific Rs amount)
+3. TARGET price (specific Rs amount + % gain)
+4. STOP-LOSS price (specific Rs amount)
+5. Expected timeframe (days/weeks)
+6. How many shares to buy with given capital
+7. Technical signal (oversold/breakout/momentum)
+8. Risk/Reward ratio
+
+Also provide:
+- Overall market sentiment for next 2-4 weeks
+- Key dates/events to watch (e.g. OGRA review, monetary policy)
+- One stock to AVOID right now and why
+
+Be very specific with numbers. Pakistani investors need clear actionable advice.`;
+
+  try{
+    const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:1000,messages:[{role:'user',content:prompt}]})});
+    const d=await r.json();
+    const analysis=d.content?.[0]?.text||'Analysis unavailable';
+    el.innerHTML=`<div style="background:linear-gradient(135deg,#1a0a0a,#3a0a0a);border:2px solid var(--red);border-radius:8px;padding:20px;margin-bottom:16px;">
+      <div style="color:var(--red);font-weight:700;font-size:14px;margin-bottom:6px;">⚡ SHORT-TERM TRADING PICKS — AI Generated</div>
+      <div style="color:rgba(255,255,255,0.7);font-size:11px;">Capital: Rs ${capital.toLocaleString()} | Risk: ${risk} | Generated: ${new Date().toLocaleTimeString('en-PK')}</div>
+    </div>
+    <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:20px;white-space:pre-wrap;font-size:13px;line-height:1.9;color:var(--text);">${analysis}</div>
+    <div style="margin-top:12px;padding:10px;background:rgba(255,165,0,0.1);border:1px solid orange;border-radius:6px;font-size:11px;color:#888;">⚠️ Disclaimer: Yeh AI analysis educational purposes ke liye hai. Stock market mein loss ka risk hota hai. Investment se pehle SECP registered broker se mashwara karein.</div>`;
+  }catch(e){el.innerHTML=`<div style="padding:20px;color:#e74c3c;">Error: ${e.message}</div>`;}
+}
+
+async function runLongTermAnalysis(){
+  const goal=document.getElementById('longTermGoal').value;
+  const capital=parseInt(document.getElementById('longTermCapital').value);
+  const el=document.getElementById('longTermResult');
+  el.innerHTML='<div style="padding:30px;text-align:center;"><div class="spinner"></div><br><div style="color:#888;margin-top:10px;">🤖 AI building your long-term PSX portfolio...</div></div>';
+
+  const stocksData=PSX_STOCKS.map(s=>`${s.sym}(${s.name},${s.sector}): Rs${s.price}, P/E ${s.pe}x, Div ${s.div}%, Beta ${s.beta}`).join(' | ');
+  const prompt=`You are a Pakistan Stock Exchange long-term investment expert. Build a COMPLETE LONG-TERM PORTFOLIO for a Pakistani retail investor.
+
+INVESTOR PROFILE:
+- Investment Goal: ${goal}
+- Capital to Invest: Rs ${capital.toLocaleString()}
+- Investment Horizon: 6-12 months
+- Exchange: PSX (KSE-100)
+
+PAKISTAN ECONOMIC CONTEXT:
+- IMF program ongoing, economic stability improving
+- Interest rates falling from 22% towards 15-16%
+- Inflation easing, PKR stabilizing at Rs 278/USD
+- CPEC projects continuing
+
+AVAILABLE STOCKS: ${stocksData}
+
+Build a DIVERSIFIED PORTFOLIO with:
+1. PORTFOLIO ALLOCATION TABLE (stock, %, Rs amount, shares to buy)
+2. SECTOR DIVERSIFICATION strategy
+3. Expected 12-month RETURN estimate
+4. TOTAL DIVIDEND INCOME expected (for dividend goal)
+5. REBALANCING strategy (when to review)
+6. RISK MITIGATION approach
+7. MONTHLY INVESTMENT PLAN (SIP strategy if applicable)
+8. EXIT STRATEGY — when to sell
+
+Make it practical for a Pakistani investor. Include specific Rs amounts for each stock purchase.`;
+
+  try{
+    const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:1000,messages:[{role:'user',content:prompt}]})});
+    const d=await r.json();
+    const analysis=d.content?.[0]?.text||'Analysis unavailable';
+    el.innerHTML=`<div style="background:linear-gradient(135deg,#0a1a0a,#0a3a0a);border:2px solid #1a7a3a;border-radius:8px;padding:20px;margin-bottom:16px;">
+      <div style="color:#4caf50;font-weight:700;font-size:14px;margin-bottom:6px;">📈 LONG-TERM PORTFOLIO — AI Generated</div>
+      <div style="color:rgba(255,255,255,0.7);font-size:11px;">Capital: Rs ${capital.toLocaleString()} | Goal: ${goal} | Generated: ${new Date().toLocaleTimeString('en-PK')}</div>
+    </div>
+    <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:20px;white-space:pre-wrap;font-size:13px;line-height:1.9;color:var(--text);">${analysis}</div>
+    <div style="margin-top:12px;padding:10px;background:rgba(255,165,0,0.1);border:1px solid orange;border-radius:6px;font-size:11px;color:#888;">⚠️ Disclaimer: Yeh AI analysis educational purposes ke liye hai. Past performance future returns ki guarantee nahi hai. SECP registered advisor se milein.</div>`;
+  }catch(e){el.innerHTML=`<div style="padding:20px;color:#e74c3c;">Error: ${e.message}</div>`;}
+}
+
+// Urdu news helpers
+function filterUrduNews(cat){
+  const el=document.getElementById('urduNewsGrid');
+  if(!el) return;
+  delete el.dataset.loaded;
+  // Store filter and reload
+  window._urduFilter=cat;
+  loadUrduNews();
+}
+
+async function loadMoreUrduNews(){
+  const btn=event.target;
+  btn.textContent='لوڈ ہو رہا ہے...';btn.disabled=true;
+  try{
+    const r=await fetch(`https://content.guardianapis.com/search?api-key=${GUARDIAN_KEY}&q=pakistan&show-fields=thumbnail,trailText,bodyText&page-size=18&order-by=newest&page=2`);
+    const d=await r.json();
+    if(d.response?.results?.length){
+      const el=document.getElementById('urduNewsGrid');
+      const existing=el.innerHTML;
+      const newArticles=d.response.results;
+      const startIdx=window._urduArticles?window._urduArticles.length:18;
+      window._urduArticles=[...(window._urduArticles||[]),...newArticles];
+      el.innerHTML+=newArticles.map((a,i)=>{
+        const idx=startIdx+i;
+        const img=a.fields?.thumbnail||catImgs.pakistan;
+        const summary=(a.fields?.trailText||'').replace(/<[^>]*>/g,'').substring(0,120);
+        return`<div class="card" id="urdu-card-${idx}" onclick="openUrduModal(${idx})" style="direction:rtl;"><img src="${img}" alt="" onerror="this.style.display='none'"><div class="card-body"><span class="badge b-pk" style="font-family:sans-serif;">خبر</span><h3 id="urdu-title-${idx}" style="font-size:16px;line-height:1.6;font-family:sans-serif;">${a.webTitle}</h3><p id="urdu-sum-${idx}" style="font-size:13px;color:var(--subtext);">${summary}</p><div class="card-meta" style="direction:ltr;">⏱ ${fmtTime(a.webPublicationDate)}</div></div></div>`;
+      }).join('');
+      translateNewsToUrdu(newArticles.map((a,i)=>({...a,_idx:startIdx+i})));
+    }
+  }catch(e){console.log('Load more error:',e);}
+  btn.textContent='مزید خبریں لوڈ کریں ↓';btn.disabled=false;
+}
+
+// Update translation status when done
+const _origTranslate=translateNewsToUrdu;
 </script>
 </body>
 </html>
