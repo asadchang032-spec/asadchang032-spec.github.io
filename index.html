@@ -227,7 +227,7 @@ footer{background:#0a0a0a;color:#999;margin-top:46px;}
 <div class="ticker-wrap">
   <div class="ticker-inner">
     <div class="ticker-tag">⚡ BREAKING</div>
-    <div class="ticker-scroll"><div class="ticker-text" id="tickerText">Loading headlines...</div></div>
+    <div class="ticker-scroll"><div class="ticker-text" id="tickerText">⚡ Chang Herald — Pakistan ki taaza khabrein | PSX KSE-100 Live | Urdu Sindhi News | Loading latest headlines...</div></div>
   </div>
 </div>
 
@@ -749,17 +749,29 @@ footer{background:#0a0a0a;color:#999;margin-top:46px;}
 <div class="page-overlay" id="sindhDistrictPage">
   <div class="page-hdr" style="background:linear-gradient(135deg,#0a2a0a,#1a5c1a);">
     <button class="page-back" onclick="closePage('sindhDistrictPage')">← Back</button>
-    <h1>🗺️ Sindh District News</h1>
+    <h1>🗺️ Sindh Zilon ki Khabrein</h1>
   </div>
   <div class="page-body">
-    <div style="background:linear-gradient(135deg,#0a2a0a,#1a5c1a);color:#fff;padding:18px;border-radius:8px;margin-bottom:18px;text-align:center;"><div style="font-size:22px;margin-bottom:6px;">🗺️</div><h2 style="font-family:'Playfair Display',serif;font-size:20px;">Sindh ke Tamam Zilon ki Khabrein</h2></div>
+    <div style="background:linear-gradient(135deg,#0a2a0a,#1a5c1a);color:#fff;padding:18px;border-radius:8px;margin-bottom:18px;">
+      <div style="font-size:22px;margin-bottom:6px;text-align:center;">🗺️ سنڌ جا ضلعا</div>
+      <h2 style="font-family:'Playfair Display',serif;font-size:18px;text-align:center;margin-bottom:8px;">Sindh ke Tamam Zilon ki Khabrein</h2>
+      <p style="font-size:12px;opacity:.8;text-align:center;">Koi bhi zila click karein — us zile ki taaza khabrein load hongi</p>
+    </div>
     <!-- District Buttons -->
     <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px;" id="districtBtns"></div>
-    <!-- Selected District News -->
-    <div id="districtSelected" style="background:linear-gradient(135deg,#0a2a0a,#1a5c1a);color:#fff;padding:14px;border-radius:6px;margin-bottom:16px;display:none;">
+    <!-- Selected District Header -->
+    <div id="districtSelected" style="background:linear-gradient(135deg,#0a2a0a,#1a5c1a);color:#fff;padding:14px 18px;border-radius:8px;margin-bottom:16px;display:none;display:flex;align-items:center;gap:10px;">
+      <div style="font-size:24px;">📍</div>
       <div id="districtName" style="font-size:16px;font-weight:700;"></div>
     </div>
-    <div class="grid3" id="districtNewsGrid"><div style="padding:40px;text-align:center;color:var(--gray);grid-column:1/-1;">Upar se koi district select karein</div></div>
+    <!-- News Grid -->
+    <div id="districtNewsGrid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:18px;">
+      <div style="grid-column:1/-1;padding:50px;text-align:center;color:var(--gray);">
+        <div style="font-size:50px;margin-bottom:12px;">🗺️</div>
+        <div style="font-size:15px;font-weight:600;margin-bottom:6px;">Koi bhi zila select karein</div>
+        <div style="font-size:12px;">Upar buttons mein se apne zile par click karein</div>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -767,57 +779,10 @@ footer{background:#0a0a0a;color:#999;margin-top:46px;}
 <div class="page-overlay" id="ramadanPage">
   <div class="page-hdr" style="background:linear-gradient(135deg,#0d3a20,#1a5c3a);">
     <button class="page-back" onclick="closePage('ramadanPage')">← Back</button>
-    <h1 style="font-family:sans-serif;">🌙 Ramadan Corner — ماہِ رمضان</h1>
+    <h1 style="font-family:sans-serif;" id="ramadanPageTitle">🌙 Islamic Corner</h1>
   </div>
-  <div class="page-body">
-    <div class="ramadan-card" style="text-align:center;">
-      <div style="font-size:50px;margin-bottom:10px;">🌙⭐🕌</div>
-      <h2 style="font-family:'Playfair Display',serif;font-size:28px;color:#f39c12;">ماہِ رمضان المبارک</h2>
-      <p style="font-size:13px;opacity:.8;margin-top:6px;">Ramadan Mubarak — Chang Herald ki taraf se</p>
-    </div>
-    <!-- Sehri Iftar Times -->
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px;">
-      <div style="background:linear-gradient(135deg,#1a0a3a,#2c1654);color:#fff;padding:20px;border-radius:8px;text-align:center;">
-        <div style="font-size:30px;margin-bottom:8px;">🌅</div>
-        <div style="font-size:13px;opacity:.7;margin-bottom:4px;">سحری کا وقت — Sehri</div>
-        <div style="font-size:28px;font-weight:700;color:#f39c12;" id="sehriTime">Loading...</div>
-        <div style="font-size:11px;opacity:.6;margin-top:4px;">Khairpur, Sindh</div>
-      </div>
-      <div style="background:linear-gradient(135deg,#3a1a0a,#5c2a00);color:#fff;padding:20px;border-radius:8px;text-align:center;">
-        <div style="font-size:30px;margin-bottom:8px;">🌆</div>
-        <div style="font-size:13px;opacity:.7;margin-bottom:4px;">افطاری کا وقت — Iftar</div>
-        <div style="font-size:28px;font-weight:700;color:#f39c12;" id="iftarTime">Loading...</div>
-        <div style="font-size:11px;opacity:.6;margin-top:4px;">Khairpur, Sindh</div>
-      </div>
-    </div>
-    <!-- Countdown -->
-    <div style="background:var(--card);border:2px solid var(--gold);border-radius:8px;padding:18px;text-align:center;margin-bottom:18px;">
-      <div style="font-size:12px;color:var(--gray);margin-bottom:6px;" id="nextEventLabel">Next Event</div>
-      <div style="font-size:32px;font-weight:700;color:var(--red);font-family:monospace;" id="ramadanCountdown">--:--:--</div>
-    </div>
-    <!-- Duas -->
-    <div class="info-card" style="background:linear-gradient(135deg,#0d3a20,#1a5c3a);color:#fff;border:none;">
-      <h3 style="color:#f39c12;">🤲 Ramadan Duas</h3>
-      <div style="margin-top:12px;" id="ramadanDuas"></div>
-    </div>
-    <!-- Quran Tilawat -->
-    <div class="info-card" style="margin-top:16px;">
-      <h3>📖 Aaj Ki Tilawat</h3>
-      <div style="margin-top:10px;" id="ramadanAyat"></div>
-      <a href="https://quran.com" target="_blank" style="display:inline-block;margin-top:12px;background:linear-gradient(135deg,#0d3a20,#1a5c3a);color:#fff;padding:10px 20px;text-decoration:none;border-radius:4px;font-size:13px;font-weight:700;">📖 Quran.com par Tilawat Karen</a>
-    </div>
-    <!-- Ramadan Recipes -->
-    <div class="info-card" style="margin-top:16px;">
-      <h3>🍽️ Ramadan Recipes — Iftar Special</h3>
-      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:12px;">
-        <div style="background:var(--bg);padding:12px;border-radius:6px;text-align:center;"><div style="font-size:28px;">🥤</div><div style="font-size:12px;font-weight:700;margin-top:4px;">Rooh Afza Sharbat</div></div>
-        <div style="background:var(--bg);padding:12px;border-radius:6px;text-align:center;"><div style="font-size:28px;">🍡</div><div style="font-size:12px;font-weight:700;margin-top:4px;">Dahi Baray</div></div>
-        <div style="background:var(--bg);padding:12px;border-radius:6px;text-align:center;"><div style="font-size:28px;">🥘</div><div style="font-size:12px;font-weight:700;margin-top:4px;">Haleem</div></div>
-        <div style="background:var(--bg);padding:12px;border-radius:6px;text-align:center;"><div style="font-size:28px;">🎂</div><div style="font-size:12px;font-weight:700;margin-top:4px;">Sheer Khurma</div></div>
-        <div style="background:var(--bg);padding:12px;border-radius:6px;text-align:center;"><div style="font-size:28px;">🥙</div><div style="font-size:12px;font-weight:700;margin-top:4px;">Samosa</div></div>
-        <div style="background:var(--bg);padding:12px;border-radius:6px;text-align:center;"><div style="font-size:28px;">🍮</div><div style="font-size:12px;font-weight:700;margin-top:4px;">Zarda</div></div>
-      </div>
-    </div>
+  <div class="page-body" id="ramadanPageBody">
+    <div style="text-align:center;padding:40px;"><div class="spinner"></div></div>
   </div>
 </div>
 
@@ -1156,7 +1121,30 @@ function renderGrid(cat,items){
 function renderLatest(){
   document.getElementById('latestList').innerHTML=allNews.slice(0,8).map(n=>`<div class="news-list-item" onclick='openModal(${JSON.stringify(n).replace(/'/g,"&#39;")})'><img src="${n.img}" onerror="this.src='${catImgs.pakistan}'" alt=""><div><h4>${n.title}</h4><p>⏱ ${n.time}</p></div></div>`).join('');
 }
-function renderTicker(){const t=allNews.slice(0,12).map(n=>'● '+n.title).join('   ');if(t)document.getElementById('tickerText').textContent=t;}
+function renderTicker(){
+  // Use allNews if available, else keep default
+  if(allNews.length>0){
+    const t=allNews.slice(0,15).map(n=>'⚡ '+n.title).join('   ●   ');
+    document.getElementById('tickerText').textContent=t;
+  }
+}
+
+// Load ticker headlines FAST — independently from main news load
+async function loadTickerFast(){
+  try{
+    const r=await fetch(`https://content.guardianapis.com/search?api-key=${GUARDIAN_KEY}&q=pakistan&show-fields=trailText&page-size=15&order-by=newest`,{cache:'no-store'});
+    const d=await r.json();
+    if(d.response?.results?.length){
+      const headlines=d.response.results.map(a=>'⚡ '+a.webTitle).join('   ●   ');
+      document.getElementById('tickerText').textContent=headlines;
+    }
+  }catch(e){
+    // Keep default text if fails
+    document.getElementById('tickerText').textContent='⚡ Chang Herald — Pakistan Breaking News | PSX Live | اردو خبریں | سنڌي خبرون | Live Updates';
+  }
+}
+// Load ticker immediately on page load
+loadTickerFast();
 
 // ===== MODAL =====
 function openModal(n){
@@ -1956,66 +1944,323 @@ function buildDistricts(){
   el.innerHTML=SINDH_DISTRICTS.map(d=>`<button class="district-btn" onclick="loadDistrictNews('${d.n}','${d.u}')">${d.icon} ${d.n}<span style="font-size:10px;color:var(--gray);margin-left:4px;font-family:sans-serif;">${d.u}</span></button>`).join('');
 }
 
-async function loadDistrictNews(name,urdu){
-  document.querySelectorAll('.district-btn').forEach(b=>{b.classList.remove('dact');if(b.textContent.includes(name))b.classList.add('dact');});
-  const selEl=document.getElementById('districtSelected');
-  selEl.style.display='block';
-  document.getElementById('districtName').innerHTML=`📍 ${name} <span style="font-family:sans-serif;">${urdu}</span> — Live News`;
-  const el=document.getElementById('districtNewsGrid');
-  el.innerHTML='<div style="grid-column:1/-1;text-align:center;padding:30px;"><div class="spinner"></div></div>';
-  const items=await fetchG(name+' sindh pakistan','sindh','');
-  if(items.length)renderGrid('sindh',items);
-  else el.innerHTML=`<div style="grid-column:1/-1;padding:24px;text-align:center;"><div style="font-size:36px;margin-bottom:10px;">🗺️</div><div style="font-size:14px;color:var(--text);margin-bottom:8px;">${name} ki specific news abhi available nahi</div><a href="https://jang.com.pk/search?q=${encodeURIComponent(name)}" target="_blank" style="background:var(--red);color:#fff;padding:8px 18px;text-decoration:none;border-radius:4px;font-size:13px;font-weight:700;">Jang mein dekhein →</a></div>`;
+async function loadDistrictNews(name, urdu){
+  // Highlight selected button
+  document.querySelectorAll('.district-btn').forEach(b=>{
+    b.classList.remove('dact');
+    b.style.background='var(--card)';b.style.color='var(--text)';b.style.borderColor='var(--border)';
+  });
+  // Find and highlight clicked button
+  document.querySelectorAll('.district-btn').forEach(b=>{
+    if(b.textContent.includes(name)){b.classList.add('dact');b.style.background='var(--red)';b.style.color='#fff';b.style.borderColor='var(--red)';}
+  });
+
+  const selEl = document.getElementById('districtSelected');
+  if(selEl){selEl.style.display='block';document.getElementById('districtName').innerHTML=`📍 ${name} <span style="font-family:sans-serif;font-size:14px;">${urdu}</span> — Live News`;}
+
+  const el = document.getElementById('districtNewsGrid');
+  el.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:36px;"><div class="spinner"></div><br><div style="color:#888;margin-top:10px;font-size:13px;">${name} ki khabrein dhundh raha hoon...</div></div>`;
+
+  // Try multiple search queries for better results
+  const queries = [
+    name + ' sindh',
+    name + ' pakistan',
+    name,
+  ];
+
+  let allItems = [];
+  for(const q of queries){
+    try{
+      const url = `https://content.guardianapis.com/search?api-key=${GUARDIAN_KEY}&q=${encodeURIComponent(q)}&show-fields=thumbnail,trailText,bodyText&page-size=9&order-by=newest`;
+      const r = await fetch(url, {cache:'no-store'});
+      const d = await r.json();
+      if(d.response?.results?.length){
+        const items = d.response.results.map(a=>({
+          title: a.webTitle||'',
+          summary: (a.fields?.trailText||'').replace(/<[^>]*>/g,'').substring(0,200),
+          cat: 'sindh',
+          img: fixI(a.fields?.thumbnail,'sindh'),
+          time: fmtT(a.webPublicationDate),
+          link: a.webUrl||'',
+          full: (a.fields?.bodyText||a.fields?.trailText||'').replace(/<[^>]*>/g,'').substring(0,800)
+        })).filter(a=>a.title.length>5);
+        allItems = [...allItems, ...items];
+        if(allItems.length >= 6) break;
+      }
+    }catch(e){console.log('District fetch error:',e.message);}
+  }
+
+  // Remove duplicates
+  const seen = new Set();
+  allItems = allItems.filter(a=>{ if(seen.has(a.title)) return false; seen.add(a.title); return true; });
+
+  if(allItems.length > 0){
+    // Render directly in districtNewsGrid
+    el.innerHTML = allItems.slice(0,9).map(n=>`
+      <div class="card" onclick='openModal(${JSON.stringify(n).replace(/'/g,"&#39;")})'>
+        <img src="${n.img}" onerror="this.src='${catImgs.sindh}'" alt="" style="width:100%;height:180px;object-fit:cover;display:block;">
+        <div class="card-body">
+          <span class="badge b-pk" style="margin-bottom:6px;display:inline-block;">📍 ${name}</span>
+          <h3>${n.title}</h3>
+          <p>${n.summary}</p>
+          <div class="card-meta">⏱ ${n.time}</div>
+        </div>
+      </div>`).join('');
+  } else {
+    // Fallback — show local news links for this district
+    const searchLinks = [
+      {name:'Jang', url:`https://jang.com.pk/search?q=${encodeURIComponent(name)}`, color:'#c0392b'},
+      {name:'Express', url:`https://www.express.pk/search?q=${encodeURIComponent(name)}`, color:'#1a3a5c'},
+      {name:'Dawn', url:`https://www.dawn.com/search?q=${encodeURIComponent(name+' sindh')}`, color:'#1a5c1a'},
+      {name:'The News', url:`https://www.thenews.com.pk/search?q=${encodeURIComponent(name)}`, color:'#b06000'},
+      {name:'ARY News', url:`https://arynews.tv/?s=${encodeURIComponent(name)}`, color:'#5a2d9a'},
+      {name:'Geo News', url:`https://www.geo.tv/search/${encodeURIComponent(name)}`, color:'#1a6ea8'},
+    ];
+    el.innerHTML = `
+      <div style="grid-column:1/-1;">
+        <div style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:24px;text-align:center;margin-bottom:16px;">
+          <div style="font-size:44px;margin-bottom:10px;">🗺️</div>
+          <div style="font-size:18px;font-weight:700;color:var(--text);margin-bottom:6px;">📍 ${name} — ${urdu}</div>
+          <div style="font-size:13px;color:var(--gray);margin-bottom:16px;">Guardian mein specific news nahi mili — in websites par dekhein:</div>
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;max-width:600px;margin:0 auto;">
+            ${searchLinks.map(l=>`<a href="${l.url}" target="_blank" style="background:${l.color};color:#fff;padding:10px;text-decoration:none;border-radius:6px;font-size:13px;font-weight:700;display:block;">${l.name} →</a>`).join('')}
+          </div>
+        </div>
+        <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:16px;">
+          <div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:12px;">📰 Pakistan General News (Latest)</div>
+          <div class="grid3" id="districtFallbackGrid"></div>
+        </div>
+      </div>`;
+    // Load general Pakistan news as fallback
+    const fallback = allNews.filter(n=>n.cat==='pakistan'||n.cat==='sindh').slice(0,6);
+    const fbEl = document.getElementById('districtFallbackGrid');
+    if(fbEl && fallback.length){
+      fbEl.innerHTML = fallback.map(n=>`
+        <div class="card" onclick='openModal(${JSON.stringify(n).replace(/'/g,"&#39;")})'>
+          <img src="${n.img}" onerror="this.src='${catImgs.pakistan}'" alt="" style="width:100%;height:140px;object-fit:cover;">
+          <div class="card-body"><span class="badge b-pk">NEWS</span><h3 style="font-size:13px;">${n.title}</h3><div class="card-meta">⏱ ${n.time}</div></div>
+        </div>`).join('');
+    }
+  }
 }
 
-// ===== RAMADAN =====
+// ===== SMART RAMADAN / ISLAMIC CORNER =====
+// Ramadan 2026 dates (approximate — update each year)
+const RAMADAN_2027_START = new Date('2027-02-17'); // approximate
+const RAMADAN_2026_START = new Date('2026-02-28'); // approximate
+const RAMADAN_2026_END   = new Date('2026-03-29'); // approximate
+
+function isRamadanActive(){
+  const now = new Date();
+  // Check if today is within Ramadan period
+  return (now >= RAMADAN_2026_START && now <= RAMADAN_2026_END);
+}
+
+let _ramadanTimer = null;
+
 async function loadRamadan(){
-  if(document.getElementById('ramadanPage').dataset.init)return;
-  document.getElementById('ramadanPage').dataset.init='1';
-  // Load prayer times for sehri/iftar
+  if(document.getElementById('ramadanPage').dataset.init) return;
+  document.getElementById('ramadanPage').dataset.init = '1';
+
+  const isActive = isRamadanActive();
+  const titleEl = document.getElementById('ramadanPageTitle');
+  const bodyEl  = document.getElementById('ramadanPageBody');
+
+  if(isActive){
+    // ===== RAMADAN IS ACTIVE =====
+    if(titleEl) titleEl.innerHTML = '🌙 Ramadan Corner — ماہِ رمضان';
+
+    bodyEl.innerHTML = `
+      <div class="ramadan-card" style="text-align:center;">
+        <div style="font-size:50px;margin-bottom:10px;">🌙⭐🕌</div>
+        <h2 style="font-family:'Playfair Display',serif;font-size:26px;color:#f39c12;">ماہِ رمضان المبارک</h2>
+        <p style="font-size:13px;opacity:.8;margin-top:5px;">Ramadan Mubarak — Chang Herald ki taraf se 🇵🇰</p>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:18px;">
+        <div style="background:linear-gradient(135deg,#1a0a3a,#2c1654);color:#fff;padding:18px;border-radius:8px;text-align:center;">
+          <div style="font-size:26px;margin-bottom:6px;">🌅</div>
+          <div style="font-size:12px;opacity:.7;margin-bottom:3px;">سحری — Sehri</div>
+          <div style="font-size:24px;font-weight:700;color:#f39c12;" id="sehriTime">Loading...</div>
+          <div style="font-size:10px;opacity:.6;margin-top:3px;">Khairpur, Sindh</div>
+        </div>
+        <div style="background:linear-gradient(135deg,#3a1a0a,#5c2a00);color:#fff;padding:18px;border-radius:8px;text-align:center;">
+          <div style="font-size:26px;margin-bottom:6px;">🌆</div>
+          <div style="font-size:12px;opacity:.7;margin-bottom:3px;">افطاری — Iftar</div>
+          <div style="font-size:24px;font-weight:700;color:#f39c12;" id="iftarTime">Loading...</div>
+          <div style="font-size:10px;opacity:.6;margin-top:3px;">Khairpur, Sindh</div>
+        </div>
+      </div>
+      <div style="background:var(--card);border:2px solid var(--gold);border-radius:8px;padding:16px;text-align:center;margin-bottom:18px;">
+        <div style="font-size:11px;color:var(--gray);margin-bottom:5px;" id="nextEventLabel">Next Event</div>
+        <div style="font-size:30px;font-weight:700;color:var(--red);font-family:monospace;" id="ramadanCountdown">--:--:--</div>
+        <div style="font-size:10px;color:var(--gray);margin-top:4px;">Khairpur local time</div>
+      </div>
+      <div id="ramadanExtras"></div>`;
+
+    // Load prayer times
+    try{
+      const t = new Date();
+      const r = await fetch(`https://api.aladhan.com/v1/timingsByCity/${t.getDate()}-${t.getMonth()+1}-${t.getFullYear()}?city=Khairpur&country=Pakistan&method=1`);
+      const d = await r.json();
+      if(d.code===200){
+        document.getElementById('sehriTime').textContent = d.data.timings.Fajr;
+        document.getElementById('iftarTime').textContent = d.data.timings.Maghrib;
+        startRamadanCountdown(d.data.timings);
+      }
+    }catch{
+      document.getElementById('sehriTime').textContent = '05:10 AM';
+      document.getElementById('iftarTime').textContent = '07:28 PM';
+    }
+
+    // Extras
+    document.getElementById('ramadanExtras').innerHTML = buildRamadanExtras();
+
+  } else {
+    // ===== RAMADAN IS NOT ACTIVE — Show Islamic Corner instead =====
+    if(titleEl) titleEl.innerHTML = '☪️ Islamic Corner — اسلامک کارنر';
+
+    // Calculate next Ramadan
+    const now = new Date();
+    const nextRamadan = now < RAMADAN_2026_START ? RAMADAN_2026_START : RAMADAN_2027_START;
+    const daysLeft = Math.ceil((nextRamadan - now) / (1000*60*60*24));
+
+    bodyEl.innerHTML = `
+      <div style="background:linear-gradient(135deg,#0d3a20,#1a5c3a);color:#fff;padding:24px;border-radius:8px;margin-bottom:18px;text-align:center;">
+        <div style="font-size:26px;direction:rtl;font-family:serif;margin-bottom:6px;">بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ</div>
+        <p style="font-size:12px;opacity:.8;">In the name of Allah, the Most Gracious, the Most Merciful</p>
+      </div>
+
+      <div style="background:var(--card);border:2px solid #f39c12;border-radius:8px;padding:18px;text-align:center;margin-bottom:18px;">
+        <div style="font-size:36px;margin-bottom:6px;">🌙</div>
+        <div style="font-size:13px;color:var(--gray);margin-bottom:4px;">Ramadan Mubarak ki taiyari</div>
+        <div style="font-size:28px;font-weight:700;color:#f39c12;">${daysLeft} Din Baqi</div>
+        <div style="font-size:12px;color:var(--gray);margin-top:4px;">Agla Ramadan: ${nextRamadan.toLocaleDateString('en-PK',{day:'numeric',month:'long',year:'numeric'})} (approx)</div>
+        <div style="font-size:11px;color:var(--subtext);margin-top:6px;padding:8px;background:var(--bg);border-radius:4px;">Is waqt Ramadan nahi hai — jab Ramadan shuru hoga, yahan Sehri/Iftar timings aur countdown automatically show hoga</div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:18px;" id="islamicDates"></div>
+
+      <div id="islamicHadith"></div>
+      <div id="islamicAyat" style="margin-top:14px;"></div>
+      <div id="islamicNames" style="margin-top:14px;"></div>
+      <div id="islamicLinks" style="margin-top:14px;"></div>
+      ${buildRamadanExtras()}`;
+
+    // Load Islamic content
+    loadIslamicForRamadanPage();
+  }
+}
+
+function buildRamadanExtras(){
+  return `
+    <div class="info-card" style="background:linear-gradient(135deg,#0d3a20,#1a5c3a);color:#fff;border:none;margin-top:14px;">
+      <h3 style="color:#f39c12;">🤲 Masnoon Duas</h3>
+      <div style="margin-top:12px;">
+        ${[
+          {ar:'اللَّهُمَّ إِنَّكَ عَفُوٌّ تُحِبُّ الْعَفْوَ فَاعْفُ عَنِّي',tr:'Aye Allah! Tu maaf karne wala hai, mujhe maaf farma — Lailatul Qadr ki Dua'},
+          {ar:'رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً وَفِي الْآخِرَةِ حَسَنَةً وَقِنَا عَذَابَ النَّارِ',tr:'Aye Rabb! Duniya mein bhi bhalayi, Akhirat mein bhi bhalayi, aur jahannum se bacha — Al-Baqarah 201'},
+          {ar:'اللَّهُمَّ أَعِنِّي عَلَى ذِكْرِكَ وَشُكْرِكَ وَحُسْنِ عِبَادَتِكَ',tr:'Aye Allah! Apne zikr, shukr aur behtareen ibadat mein meri madad farma'},
+          {ar:'رَبِّ اغْفِرْ لِي وَلِوَالِدَيَّ وَلِلْمُؤْمِنِينَ',tr:'Aye Rabb! Mujhe, mere waldain ko aur tamam momineen ko maaf farma'},
+        ].map(d=>`<div style="margin-bottom:12px;padding:10px;background:rgba(255,255,255,.1);border-radius:5px;border-right:3px solid #f39c12;"><div style="font-size:17px;direction:rtl;font-family:serif;line-height:2;margin-bottom:4px;">${d.ar}</div><div style="font-size:11px;opacity:.8;">${d.tr}</div></div>`).join('')}
+      </div>
+    </div>
+    <div class="info-card" style="margin-top:14px;">
+      <h3>🍽️ Iftar Special Recipes</h3>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px;">
+        ${[['🥤','Rooh Afza'],['🍡','Dahi Baray'],['🥘','Haleem'],['🎂','Sheer Khurma'],['🥙','Samosa'],['🍮','Zarda']].map(([e,n])=>`<div style="background:var(--bg);padding:10px;border-radius:5px;text-align:center;"><div style="font-size:24px;">${e}</div><div style="font-size:11px;font-weight:700;margin-top:3px;">${n}</div></div>`).join('')}
+      </div>
+    </div>
+    <div class="info-card" style="margin-top:14px;">
+      <h3>🔗 Islamic Resources</h3>
+      <div style="display:flex;flex-direction:column;gap:8px;margin-top:10px;">
+        <a href="https://quran.com" target="_blank" style="background:linear-gradient(135deg,#0d3a20,#1a5c3a);color:#fff;padding:10px 14px;text-decoration:none;border-radius:4px;font-size:13px;font-weight:700;display:flex;align-items:center;gap:8px;">📖 Quran.com — Online Quran Padhein</a>
+        <a href="https://sunnah.com" target="_blank" style="background:linear-gradient(135deg,#1a3a5c,#0d2a4e);color:#fff;padding:10px 14px;text-decoration:none;border-radius:4px;font-size:13px;font-weight:700;display:flex;align-items:center;gap:8px;">📚 Sunnah.com — Hadith Collection</a>
+        <a href="https://islamicfinder.org" target="_blank" style="background:linear-gradient(135deg,#3a1a0a,#5c2a00);color:#fff;padding:10px 14px;text-decoration:none;border-radius:4px;font-size:13px;font-weight:700;display:flex;align-items:center;gap:8px;">🕌 IslamicFinder — Namaz Times</a>
+        <a href="https://www.duas.org" target="_blank" style="background:linear-gradient(135deg,#2c1654,#1a0a3e);color:#fff;padding:10px 14px;text-decoration:none;border-radius:4px;font-size:13px;font-weight:700;display:flex;align-items:center;gap:8px;">🤲 Duas.org — Masnoon Duas</a>
+      </div>
+    </div>`;
+}
+
+async function loadIslamicForRamadanPage(){
+  // Islamic date
   try{
     const t=new Date();
-    const r=await fetch(`https://api.aladhan.com/v1/timingsByCity/${t.getDate()}-${t.getMonth()+1}-${t.getFullYear()}?city=Khairpur&country=Pakistan&method=1`);
+    const r=await fetch(`https://api.aladhan.com/v1/gToH/${t.getDate()}-${t.getMonth()+1}-${t.getFullYear()}`);
     const d=await r.json();
     if(d.code===200){
-      document.getElementById('sehriTime').textContent=d.data.timings.Fajr+' AM';
-      document.getElementById('iftarTime').textContent=d.data.timings.Maghrib+' PM';
-      startRamadanCountdown(d.data.timings);
+      const h=d.data.hijri;
+      const el=document.getElementById('islamicDates');
+      if(el) el.innerHTML=`
+        <div style="background:linear-gradient(135deg,#0d3a20,#1a5c3a);color:#fff;padding:16px;border-radius:8px;text-align:center;">
+          <div style="font-size:11px;opacity:.7;margin-bottom:4px;">📅 Islamic Date</div>
+          <div style="font-size:20px;font-weight:700;color:#f39c12;">${h.day} ${h.month.en}</div>
+          <div style="font-size:16px;direction:rtl;font-family:serif;margin-top:4px;">${h.day} ${h.month.ar} ${h.year} ھ</div>
+        </div>
+        <div style="background:linear-gradient(135deg,#1a3a5c,#0d2a4e);color:#fff;padding:16px;border-radius:8px;text-align:center;">
+          <div style="font-size:11px;opacity:.7;margin-bottom:4px;">📅 Gregorian Date</div>
+          <div style="font-size:18px;font-weight:700;color:#00d4ff;">${t.toLocaleDateString('en-PK',{day:'numeric',month:'long'})}</div>
+          <div style="font-size:13px;margin-top:4px;opacity:.8;">${t.toLocaleDateString('en-PK',{weekday:'long'})}</div>
+        </div>`;
     }
-  }catch{
-    document.getElementById('sehriTime').textContent='05:10 AM';
-    document.getElementById('iftarTime').textContent='07:28 PM';
-  }
-  // Duas
-  const duas=[
-    {ar:'اللَّهُمَّ إِنَّكَ عَفُوٌّ تُحِبُّ الْعَفْوَ فَاعْفُ عَنِّي',tr:'Aye Allah! Tu maaf karne wala hai, maafi ko pasand karta hai, pus mujhe maaf farma.'},
-    {ar:'رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً وَفِي الْآخِرَةِ حَسَنَةً',tr:'Aye humare Rabb! Hamein duniya mein bhi bhalayi de aur Aakhirat mein bhi.'},
-    {ar:'اللَّهُمَّ أَعِنِّي عَلَى ذِكْرِكَ وَشُكْرِكَ',tr:'Aye Allah! Apne zikr, shukr aur behtareen ibadat mein meri madad farma.'},
+  }catch{}
+
+  // Hadith
+  const hadiths=[
+    {t:'Actions are judged by intentions, so each man will have what he intended.',s:'Bukhari & Muslim'},
+    {t:'The best of you are those who are best to their families.',s:'Tirmidhi'},
+    {t:'Cleanliness is half of faith.',s:'Muslim'},
+    {t:'Smile at your brother — it is an act of charity.',s:'Tirmidhi'},
+    {t:'The strong person is not the one who can wrestle, but the one who controls himself when angry.',s:'Bukhari'},
+    {t:'Seek knowledge from the cradle to the grave.',s:'Hadith'},
+    {t:'The best charity is giving water to drink.',s:'Ahmad'},
+    {t:'None of you truly believes until he loves for his brother what he loves for himself.',s:'Bukhari & Muslim'},
   ];
-  document.getElementById('ramadanDuas').innerHTML=duas.map(d=>`<div style="margin-bottom:14px;padding:12px;background:rgba(255,255,255,.1);border-radius:6px;border-right:3px solid #f39c12;"><div style="font-size:18px;direction:rtl;font-family:serif;line-height:2;margin-bottom:6px;">${d.ar}</div><div style="font-size:12px;opacity:.8;">${d.tr}</div></div>`).join('');
+  const h=hadiths[new Date().getDate()%hadiths.length];
+  const hEl=document.getElementById('islamicHadith');
+  if(hEl) hEl.innerHTML=`<div class="info-card" style="background:linear-gradient(135deg,#0d3a20,#1a5c3a);color:#fff;border:none;"><h3 style="color:#f39c12;">📖 Hadith of the Day</h3><div style="margin-top:10px;font-size:15px;line-height:1.9;font-style:italic;">"${h.t}"</div><div style="font-size:12px;color:#f39c12;margin-top:8px;font-weight:700;">— ${h.s}</div></div>`;
+
   // Ayat
-  document.getElementById('ramadanAyat').innerHTML=`<div style="background:var(--bg);padding:14px;border-radius:6px;border-left:3px solid var(--red);"><div style="font-size:20px;direction:rtl;font-family:serif;line-height:2;color:var(--red);">شَهْرُ رَمَضَانَ الَّذِي أُنزِلَ فِيهِ الْقُرْآنُ</div><div style="font-size:13px;color:var(--subtext);margin-top:6px;">"Ramadan woh mahina hai jis mein Quran utara gaya" — Al-Baqarah 2:185</div></div>`;
+  const ayaat=[
+    {a:'إِنَّ مَعَ الْعُسْرِ يُسْرًا',u:'بے شک مشکل کے ساتھ آسانی ہے',r:'Al-Sharh 94:6'},
+    {a:'وَمَن يَتَّقِ اللَّهَ يَجْعَل لَّهُ مَخْرَجًا',u:'جو اللہ سے ڈرے، اللہ اس کے لیے راستہ نکالتا ہے',r:'At-Talaq 65:2'},
+    {a:'حَسْبُنَا اللَّهُ وَنِعْمَ الْوَكِيلُ',u:'ہمیں اللہ کافی ہے اور وہ بہترین کارساز ہے',r:'Al-Imran 3:173'},
+    {a:'رَبِّ زِدْنِي عِلْمًا',u:'اے میرے رب! میرے علم میں اضافہ فرما',r:'Ta-Ha 20:114'},
+    {a:'إِنَّ اللَّهَ مَعَ الصَّابِرِينَ',u:'بے شک اللہ صبر کرنے والوں کے ساتھ ہے',r:'Al-Baqarah 2:153'},
+  ];
+  const ay=ayaat[new Date().getDate()%ayaat.length];
+  const aEl=document.getElementById('islamicAyat');
+  if(aEl) aEl.innerHTML=`<div class="info-card"><h3>📖 Ayat of the Day</h3><div style="font-size:24px;direction:rtl;font-family:serif;line-height:2;color:var(--red);margin-top:10px;">${ay.a}</div><div style="font-size:16px;direction:rtl;font-family:sans-serif;margin-top:6px;">${ay.u}</div><div style="font-size:12px;color:var(--gray);margin-top:5px;">${ay.r}</div></div>`;
+
+  // 99 Names
+  const names=[{ar:'الرَّحْمَنُ',en:'Ar-Rahman',m:'Most Gracious'},{ar:'الرَّحِيمُ',en:'Ar-Raheem',m:'Most Merciful'},{ar:'الْمَلِكُ',en:'Al-Malik',m:'The King'},{ar:'الْقُدُّوسُ',en:'Al-Quddus',m:'Most Pure'},{ar:'السَّلَامُ',en:'As-Salam',m:'Source of Peace'},{ar:'الْعَزِيزُ',en:'Al-Aziz',m:'The Almighty'},{ar:'الْخَالِقُ',en:'Al-Khaliq',m:'The Creator'},{ar:'الرَّزَّاقُ',en:'Ar-Razzaq',m:'The Provider'},{ar:'الْحَكِيمُ',en:'Al-Hakeem',m:'The Wise'},{ar:'الْعَلِيمُ',en:'Al-Aleem',m:'All-Knowing'},{ar:'الْقَدِيرُ',en:'Al-Qadir',m:'All-Powerful'},{ar:'الشَّكُورُ',en:'Ash-Shakoor',m:'The Grateful'}];
+  const nEl=document.getElementById('islamicNames');
+  if(nEl) nEl.innerHTML=`<div class="info-card"><h3>🌟 Asma ul Husna — 99 Names of Allah</h3><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-top:10px;">${names.map(n=>`<div style="background:linear-gradient(135deg,#0d3a20,#1a5c3a);color:#fff;padding:10px;border-radius:4px;text-align:center;"><div style="font-size:18px;font-family:serif;line-height:1.6;">${n.ar}</div><div style="font-size:10px;font-weight:700;color:#f39c12;margin-top:3px;">${n.en}</div><div style="font-size:9px;opacity:.7;">${n.m}</div></div>`).join('')}</div></div>`;
 }
 
 function startRamadanCountdown(timings){
+  if(_ramadanTimer) clearInterval(_ramadanTimer);
   function tick(){
     const now=new Date();
+    // Pakistan time offset
+    const pkNow=new Date(now.getTime()+5*3600000);
     const[fh,fm]=timings.Fajr.split(':').map(Number);
     const[mh,mm]=timings.Maghrib.split(':').map(Number);
-    const fajr=new Date(now);fajr.setHours(fh,fm,0);
-    const maghrib=new Date(now);maghrib.setHours(mh,mm,0);
+    const todayFajr=new Date(pkNow);todayFajr.setUTCHours(fh,fm,0,0);
+    const todayMaghrib=new Date(pkNow);todayMaghrib.setUTCHours(mh,mm,0,0);
+    const tomorrowFajr=new Date(todayFajr.getTime()+86400000);
     let target,label;
-    if(now<fajr){target=fajr;label='Sehri mein baaqi';}
-    else if(now<maghrib){target=maghrib;label='Iftar mein baaqi';}
-    else{target=new Date(fajr.getTime()+86400000);label='Kal Sehri mein baaqi';}
-    const diff=target-now;
+    if(pkNow<todayFajr){target=todayFajr;label='⏰ Sehri mein baaqi';}
+    else if(pkNow<todayMaghrib){target=todayMaghrib;label='🌙 Iftar mein baaqi';}
+    else{target=tomorrowFajr;label='⏰ Kal Sehri mein baaqi';}
+    const diff=target-pkNow;
+    if(diff<0)return;
     const h=Math.floor(diff/3600000),m=Math.floor((diff%3600000)/60000),s=Math.floor((diff%60000)/1000);
     const cd=document.getElementById('ramadanCountdown');
     const lbl=document.getElementById('nextEventLabel');
     if(cd)cd.textContent=String(h).padStart(2,'0')+':'+String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');
     if(lbl)lbl.textContent=label;
   }
-  setInterval(tick,1000);tick();
+  _ramadanTimer=setInterval(tick,1000);tick();
 }
 
 // ===== PUSH NOTIFICATIONS =====
@@ -2039,21 +2284,23 @@ if(localStorage.getItem('ch_notif')==='granted'){
 // Send notification when breaking news arrives
 function sendBreakingNotif(title){
   if(Notification.permission==='granted'&&title){
-    new Notification('🚨 Chang Herald — Breaking News',{body:title,icon:'https://asadchang032-spec.github.io/favicon.ico',tag:'breaking',renotify:true});
+    try{new Notification('🚨 Chang Herald — Breaking!',{body:title,icon:'https://asadchang032-spec.github.io/favicon.ico',tag:'breaking',renotify:true});}catch{}
   }
 }
-
-// Override renderTicker to also send notification
-const _origRenderTicker=renderTicker;
-function renderTicker(){
-  _origRenderTicker();
-  if(allNews.length>0&&allNews[0].title){sendBreakingNotif(allNews[0].title);}
+// Notify on first news load
+let _notifSent=false;
+const _origLoadNews=loadNews;
+async function loadNewsAndNotify(){
+  await loadNews();
+  if(!_notifSent&&allNews.length>0){_notifSent=true;sendBreakingNotif(allNews[0].title);}
 }
 
 // ===== START =====
 loadNews();
+loadTickerFast(); // Fast ticker load
 setInterval(loadNews,5*60*1000);
 setInterval(loadPSXIndex,5*60*1000);
+setInterval(checkAlerts,5*60*1000);
 if(localStorage.getItem('ch_ck')==='ok')document.getElementById('cookieBanner').style.display='none';
 </script>
 </body>
